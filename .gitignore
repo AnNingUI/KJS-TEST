@@ -9,6 +9,7 @@ kubejs/**/.probe
 !manifest.json
 !modlist.html
 
+config/**
 !config/vaultpatcher_asm
 !config/kubejs-client.toml
 !defaultconfigs/champions-entities.toml
