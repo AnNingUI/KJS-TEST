@@ -35,6 +35,7 @@ XaeroWaypoints_BACKUP240807
 *.log
 *.jar
 *.dll
+*.dat
 options.txt
 package-lock.json
 package.json
