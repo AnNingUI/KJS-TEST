@@ -1,0 +1,44 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/cube_column",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "kubejs:item/aqaq_item",
+		"particle": "kubejs:item/aqaq_item"
+	},
+	"elements": [
+		{
+			"from": [6, 6, 0],
+			"to": [10, 10, 2],
+			"faces": {
+				"north": {"uv": [7.5, 7, 8.5, 8], "texture": "#0"},
+				"east": {"uv": [1, 8, 1.5, 9], "texture": "#0"},
+				"south": {"uv": [0, 8, 1, 9], "texture": "#0"},
+				"west": {"uv": [1.5, 8, 2, 9], "texture": "#0"},
+				"up": {"uv": [3, 8.5, 2, 8], "texture": "#0"},
+				"down": {"uv": [4, 8, 3, 8.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 0, 2],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"east": {"uv": [4, 0, 7.5, 4], "texture": "#0"},
+				"south": {"uv": [0, 4, 4, 8], "texture": "#0"},
+				"west": {"uv": [4, 4, 7.5, 8], "texture": "#0"},
+				"up": {"uv": [11.5, 3.5, 7.5, 0], "texture": "#0"},
+				"down": {"uv": [11.5, 3.5, 7.5, 7], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": [0, 1]
+		}
+	]
+}

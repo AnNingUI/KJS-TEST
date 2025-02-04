@@ -1,0 +1,43 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"working": {
+			"loop": true,
+			"animation_length": 0.75,
+			"bones": {
+				"center": {
+					"rotation": {
+						"vector": ["Math.sin(query.anim_time*180)*180", "Math.sin(query.anim_time*180)*180", "Math.sin(query.anim_time*180)*180"]
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.375": {
+							"vector": [2, 2, 2]
+						},
+						"0.75": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"ring": {
+					"rotation": {
+						"vector": ["Math.sin(query.anim_time*90)*180", "Math.sin(query.anim_time*90)*180", "Math.sin(query.anim_time*90)*180"]
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.375": {
+							"vector": [2, 2, 2]
+						},
+						"0.75": {
+							"vector": [1, 1, 1]
+						}
+					}
+				}
+			}
+		}
+	}
+}

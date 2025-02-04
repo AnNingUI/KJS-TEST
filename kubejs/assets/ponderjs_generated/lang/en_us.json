@@ -1,0 +1,15 @@
+{
+  "kubejs.ponder.hydraspawn_1.header": "hydras Spawn",
+  "kubejs.ponder.hydraspawn_1.text_1": "Right click it generates hydra (actually hydra Boss brush monster cage)",
+  "kubejs.ponder.lichspawn_1.header": "lichs Spawn",
+  "kubejs.ponder.lichspawn_1.text_1": "Right click it generates lich (actually lich Boss brush monster cage)",
+  "kubejs.ponder.multiblock_magic.header": "Multiblock: Magic",
+  "kubejs.ponder.multiblock_magic.text_1": "If the output you want is fluid, you should place the jar here",
+  "kubejs.ponder.multiblock_magic.text_2": "If the output you want is item, you should put depot here",
+  "kubejs.ponder.nagaspawn_1.header": "nagas Spawn",
+  "kubejs.ponder.nagaspawn_1.text_1": "Right click it generates naga (actually naga Boss brush monster cage)",
+  "kubejs.ponder.snow_queenspawn_1.header": "snow_queens Spawn",
+  "kubejs.ponder.snow_queenspawn_1.text_1": "Right click it generates snow_queen (actually snow_queen Boss brush monster cage)",
+  "kubejs.ponder.ur_ghastspawn_1.header": "ur_ghasts Spawn",
+  "kubejs.ponder.ur_ghastspawn_1.text_1": "Right click it generates ur_ghast (actually ur_ghast Boss brush monster cage)"
+}

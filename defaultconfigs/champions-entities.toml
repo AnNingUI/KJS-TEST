@@ -1,0 +1,15 @@
+# [[entities]]
+#   entity = "minecraft:creeper"
+#   minTier = 0
+#   maxTier = 4
+#   presetAffixes = []
+#   affixList = ["champions:knocking", "champions:wounding", "champions:paralyzing", "champions:molten"]
+#   affixPermission = "BLACKLIST"
+
+[[entities]]
+  entity = "cataclysm:ignis"
+  minTier = 4
+  maxTier = 5
+  presetAffixes = []
+  affixList = ["champions:molten", "champions:lively", "champions:dampening", "champions:hasty", "champions:jailer", "champions:shielding", "champions:enkindling"]
+  affixPermission = "WHITELIST"

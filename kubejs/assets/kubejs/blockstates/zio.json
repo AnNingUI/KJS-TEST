@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "kubejs:block/zio",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "kubejs:block/zio",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "kubejs:block/zio"
+    },
+    "facing=south": {
+      "model": "kubejs:block/zio",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "kubejs:block/zio",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "kubejs:block/zio",
+      "y": 270
+    }
+  }
+}

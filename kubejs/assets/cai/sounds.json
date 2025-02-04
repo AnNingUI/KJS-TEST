@@ -1,0 +1,10 @@
+{
+  "music.wrist": {
+      "sounds": [
+          {
+              "name": "cai:wrist",
+              "stream": true
+          }
+      ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+    "variants": {
+      "facing=down": {
+        "model": "kubejs:block/aqaq_down",
+        "x": 90,
+        "uvlock": true
+      },
+      "facing=east": {
+        "model": "kubejs:block/aqaq",
+        "y": 90
+      },
+      "facing=north": {
+        "model": "kubejs:block/aqaq"
+      },
+      "facing=south": {
+        "model": "kubejs:block/aqaq",
+        "y": 180
+      },
+      "facing=up": {
+        "model": "kubejs:block/aqaq",
+        "x": 270,
+        "uvlock": true
+      },
+      "facing=west": {
+        "model": "kubejs:block/aqaq",
+        "y": 270
+      }
+    }
+  }

@@ -1,0 +1,8 @@
+{
+  "parent": "dimasic_server:custom/respawn_pedestal3",
+  "textures": {
+    "all": "dimasic_server:block/ur-ghast_spawn",
+    "particle": "dimasic_server:block/ur-ghast_spawn",
+    "0": "dimasic_server:block/ur-ghast_spawn"
+  }
+}
