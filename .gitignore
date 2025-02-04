@@ -10,7 +10,8 @@ customparitcles
 # config
 ./defaultconfigs/ftblibrary
 ./defaultconfigs/ftbultimine
-config/* !config/kubejs-client.toml
+/config/* && !config/*vaultpatcher*
+
 
 # kubejs
 ./kubejs/md
@@ -27,10 +28,9 @@ saves
 schematics
 screenshots
 shaderpacks
-vaultpatcher
 xaero
 XaeroWaypoints_BACKUP240807
-
+vaultpatcher
 *.log
 *.jar
 *.dll
