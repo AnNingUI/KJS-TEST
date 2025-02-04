@@ -10,7 +10,9 @@ kubejs/**/.probe
 !modlist.html
 
 config/**
-!config/vaultpatcher_asm
+!config/vaultpatcher_asm/config.json
+!config/vaultpatcher_asm/renderjs.json
+!config/vaultpatcher_asm/lookme.txt
 !config/kubejs-client.toml
 !defaultconfigs/champions-entities.toml
 !defaultconfigs/champions-ranks.toml
