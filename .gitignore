@@ -9,7 +9,6 @@ kubejs/**/.probe
 !manifest.json
 !modlist.html
 
-config/**
 !config/vaultpatcher_asm/config.json
 !config/vaultpatcher_asm/renderjs.json
 !config/vaultpatcher_asm/lookme.txt
