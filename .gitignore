@@ -10,8 +10,8 @@ customparitcles
 # config
 ./defaultconfigs/ftblibrary
 ./defaultconfigs/ftbultimine
-./config/*
-!/config/kubejs-client.toml
+config
+!./config/kubejs-client.toml
 
 # kubejs
 ./kubejs/md
