@@ -1,4 +1,0 @@
-因为.class文件不太适合上传的原因，所以把.class文件打成zip上传到了我的网盘
-解压后根目录下的vaultpatcher文件夹下
-链接：https://wwdv.lanzouk.com/iM4kC2mpp2tg
-密码：47ot

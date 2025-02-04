@@ -1,9 +1,0 @@
-{
-  "maxParticleAmountOfSingleQueue": 32768,
-  "limitMaxParticleGenerateDistance": false,
-  "noWelcomeScreen": true,
-  "bufferFillerThreads": 4,
-  "takeOverRendering": "ALL",
-  "takeOverTicking": "VANILLA",
-  "optimizeCommandBlockEditScreen": true
-}
