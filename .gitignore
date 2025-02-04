@@ -1,45 +1,15 @@
-.idea
-.vscode
-.probe
-./1.20.1-Forge_47.3.1-natives
-1.20.1-Forge_47.3.1-natives
+*.*
+!.gitignore
+!kubejs/**
+kubejs/config
+kubejs/md
+kubejs/**/probe
+kubejs/**/.probe
 
-crash-reports
-customparitcles
+!manifest.json
+!modlist.html
 
-# config
-./defaultconfigs/ftblibrary
-./defaultconfigs/ftbultimine
-/config/* && !config/*vaultpatcher*
-
-
-# kubejs
-./kubejs/md
-./kubejs/**/probe
-./kubejs/**/.probe
-
-local
-logs
-mods
-patchouli_books
-PCL
-resourcepacks
-saves
-schematics
-screenshots
-shaderpacks
-xaero
-XaeroWaypoints_BACKUP240807
-vaultpatcher
-*.log
-*.jar
-*.dll
-*.dat
-options.txt
-package-lock.json
-package.json
-*.properties
-1.20.1-Forge_47.3.1.json
-patchouli_data.json
-usercache.json
-usernamecache.json
+!config/vaultpatcher_asm
+!config/kubejs-client.toml
+!defaultconfigs/champions-entities.toml
+!defaultconfigs/champions-ranks.toml
