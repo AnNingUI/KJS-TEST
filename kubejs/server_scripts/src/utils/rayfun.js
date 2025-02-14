@@ -1,10 +1,9 @@
-const { $Player } = require("packages/net/minecraft/world/entity/player/$Player")
 
 /**
  * 计算玩家视线射线的起始点和结束点
  * 
  * @param {number} rayLength 
- * @param {$Player} player 
+ * @param {$Player_} player 
  * @returns {{startX: number, startY: number, startZ: number, endX: number, endY: number, endZ: number, direction: {x: number, y: number, z: number} }} 射线的起始点、结束点和方向向量
  */
 const playerRayTrace = (rayLength, player) => {
@@ -89,7 +88,7 @@ const inverseAcquisitionVector = (startX, startY, startZ, endX, endY, endZ, rayL
 /**
  * 在服务器中延迟执行函数
  * 
- * @param {import("packages/net/minecraft/server/$MinecraftServer").$MinecraftServer$Type} server - Minecraft 服务器对象
+ * @param {$MinecraftServer_} server - Minecraft 服务器对象
  * @param {Function} fun - 要执行的函数
  * @param {number} sTick - 当前的 tick 计数
  * @param {number} eTick - 结束的 tick 计数

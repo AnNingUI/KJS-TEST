@@ -1,17 +1,15 @@
-const { $Player } = require('packages/net/minecraft/world/entity/player/$Player');
-const { $ItemStack } = require('packages/net/minecraft/world/item/$ItemStack');
-
-let $CuriosApi = require('packages/top/theillusivec4/curios/api/$CuriosApi').$CuriosApi
+const $CuriosApi = Java.loadClass('top.theillusivec4.curios.api.CuriosApi')
 
 
 
 /**
  * 返回对应槽位物品列表
- * @param {$Player} player 
+ * @param {$Player_} player 
  * @param {CuriosSlot} slot
- * @returns {Array<$ItemStack>}
+ * @returns {Array<$ItemStack_>}
  */
 function getCuriosItemListBySlot(player,slot){
+    // 推荐使用Nbt方法，简介明了，但是容易出bug所以在这里我使用CuriosApi
     // let curios = player.nbt.ForgeCaps['curios:inventory']["Curios"].find(function(curio) {
 	// 	return curio["Identifier"] === slot;
 	// })
@@ -20,8 +18,8 @@ function getCuriosItemListBySlot(player,slot){
 }
 
 /**
- * 
- * @param {$Player} player 
+ * 判断玩家有无装饰此饰品
+ * @param {$Player_} player 
  * @param {string} itemId 
  */
 function hasCuriosItem(player,itemId){
@@ -33,8 +31,8 @@ function hasCuriosItem(player,itemId){
 }
 
 /**
- * 
- * @param {$Player} player 
+ * 判断玩家有无装饰此饰品在目标槽位上
+ * @param {$Player_} player 
  * @param {CuriosSlot} slot 
  * @param {string} itemId 
  * @returns 
@@ -50,7 +48,7 @@ function hasCuriosItemBySlot(player, slot, itemId) {
 
 /**
  * 返回是否有此物品在player的slot上，及物品数量，及对应物品数组对的每个物品相对于该槽位的索引，对应槽位数量
- * @param {$Player} player 
+ * @param {$Player_} player 
  * @param {CuriosSlot} slot
  * @param {string} itemId 
  * @returns { CuriosInfoForPlayerSlot }
@@ -76,20 +74,20 @@ function getCuriosInfoForPlayerSlot(player, slot, itemId) {
             result.SlotBySelfIndexs.push(item.Slot);
         }
     });
-    result.SlotSize = result.hasItem ? CuriosSlotMethod("getfor", slot, player, null) : 0;
+    result.SlotSize = result.hasItem ? useCuriosSlotMethod("getfor", slot, player, null) : 0;
     return result;
 }
 
 
 /**
- * 
+ * 对槽位数量的动态操作
  * @param {CuriosMethod} method 
  * @param {CuriosSlot} slot 
- * @param {$Player} player 
+ * @param {$Player_} player 
  * @param {Number} amount 
  * @returns 
  */
-function CuriosSlotMethod(method,slot,player,amount){
+function useCuriosSlotMethod(method,slot,player,amount){
     switch(method)
     {
         case "shrink":
@@ -111,11 +109,3 @@ function CuriosSlotMethod(method,slot,player,amount){
             break;
     }
 }
-
-
-
-
-
-
-
-

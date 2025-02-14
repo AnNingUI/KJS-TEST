@@ -1,4 +1,4 @@
-const { $Entity } = require("packages/net/minecraft/world/entity/$Entity");
+
 
 global.itemss = []
 global.blockitem;
@@ -105,34 +105,35 @@ function colorRandomNum () {
 
 /**
  * 
- * @param {$Entity} E 
+ * @param {$Entity_} E 
  */
 global.myjoTick = (E) => {
     let {x,y,z} = E
     // console.log(x,y,z)
+    /** @type {LDParticle} */
     let data = {
-        type: "ELECTRIC_SPARK",
-        colorStart: [colorLinearNum(),colorLinearNum(),colorRandomNum()],
-        colorEnd: [colorRandomNum(),colorRandomNum(),colorLinearNum()],
-        transparencyStart: 1,
-        transparencyEnd: 0,
-        scaleStart: 1,
-        scaleEnd: 0,
-        lifetime: 20,
-        randomOffset: 0,
-        motionX: 0,
-        motionY: 0,
-        motionZ: 0,
-        randomMotionX: 0,
-        randomMotionY: 0,
-        randomMotionZ: 0,
-        x: x,
-        y: y,
-        z: z,
-        count: 1
+        pType             : "ELECTRIC_SPARK",
+        colorStart        : [colorLinearNum(),colorLinearNum(),colorRandomNum()],
+        colorEnd          : [colorRandomNum(),colorRandomNum(),colorLinearNum()],
+        transparencyStart : 1,
+        transparencyEnd   : 0,
+        scaleStart        : 1,
+        scaleEnd          : 0,
+        lifetime          : 20,
+        randomOffset      : 0,
+        motionX           : 0,
+        motionY           : 0,
+        motionZ           : 0,
+        randomMotionX     : 0,
+        randomMotionY     : 0,
+        randomMotionZ     : 0,
+        x                 : x,
+        y                 : y,
+        z                 : z,
+        count             : 1
     }
     Utils.getServer().sendData(
-        "particle",
+        "ld:particle",
         data
     )
 }

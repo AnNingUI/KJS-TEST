@@ -1,10 +1,8 @@
-const { $BlockEntityJS : $BeJS } = require('packages/dev/latvian/mods/kubejs/block/entity/$BlockEntityJS');
-const { $EntitySelector : EntitySelector } = require('packages/net/minecraft/world/entity/$EntitySelector');
-const { $AABB : mutAABB } = require('packages/net/minecraft/world/phys/$AABB');
+const EntitySelector = Java.loadClass('net.minecraft.world.entity.EntitySelector');
 
-const $PatchouliAPI = require('packages/vazkii/patchouli/api/$PatchouliAPI').$PatchouliAPI;
+const $PatchouliAPI = Java.loadClass('vazkii.patchouli.api.PatchouliAPI');
 const $Character = Java.loadClass('java.lang.Character');
-const $GlowItemFrame = require('packages/net/minecraft/world/entity/decoration/$GlowItemFrame').$GlowItemFrame;
+const $GlowItemFrame = Java.loadClass('net.minecraft.world.entity.decoration.GlowItemFrame');
 
 global.ClayAltarBlock = {
     O: Block.getBlock('minecraft:beacon'),
@@ -189,7 +187,7 @@ CreateEvents.spoutHandler((event) => {
         "kubejs:jar_input",
         "kubejs:jar",
         (block, fluid, simulate) => {
-            let be = /**@type {$BeJS}*/(block.entity);
+            let be = /**@type {$BlockEntityJS_}*/(block.entity);
             let dataCompound = block.entityData.getCompound("data");
             if (!dataCompound) return 0;
 
@@ -247,7 +245,7 @@ CreateEvents.spoutHandler((event) => {
             'minecraft:hopper', // 目標方塊
             (block, fluid, simulate) => {
                 if (fluid.id === rs.fluid.id && fluid.amount >= rs.amount) {
-                    let aabb = new mutAABB(block.x, block.y+1, block.z, block.x + 1, block.y + 2, block.z + 1);
+                    let aabb = AABB.of(block.x, block.y+1, block.z, block.x + 1, block.y + 2, block.z + 1);
                     let glow_item_frame = block.level.getEntitiesOfClass($GlowItemFrame,aabb,EntitySelector.ENTITY_STILL_ALIVE)
                     let glow_item_item = /**@type {$GlowItemFrame} */ (glow_item_frame[0] ==undefined ? undefined : glow_item_frame[0].item);
                     let length = block.getEntityData().Items.length

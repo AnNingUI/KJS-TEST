@@ -1,38 +1,28 @@
-
-const { $RegisterParticleProvidersEvent } = require('packages/net/minecraftforge/client/event/$RegisterParticleProvidersEvent');
-const { $RegistryObject } = require('packages/net/minecraftforge/registries/$RegistryObject');
-
-// const { $LodestoneParticleType } = require('packages/team/lodestar/lodestone/systems/particle/type/$LodestoneParticleType');
-// const $LodestoneParticleType = Java.loadClass('team.lodestar.lodestone.systems.particle.type.LodestoneParticleType');
-// const { $LodestoneWorldParticleType } = require('packages/team/lodestar/lodestone/systems/particle/world/type/$LodestoneWorldParticleType');
-const $LodestoneWorldParticleType = Java.loadClass('team.lodestar.lodestone.systems.particle.world.type.LodestoneWorldParticleType');
-const $LodestoneParticleType = $LodestoneWorldParticleType;
-
-const $LodestoneScreenParticleRegistry = require('packages/team/lodestar/lodestone/registry/common/particle/$LodestoneScreenParticleRegistry').$LodestoneScreenParticleRegistry;
-
-// const $LodestoneParticleType$Factory = require('packages/team/lodestar/lodestone/systems/particle/type/$LodestoneParticleType$Factory').$LodestoneParticleType$Factory
-// const $LodestoneParticleType$Factory = Java.loadClass('team.lodestar.lodestone.systems.particle.type.LodestoneParticleType');
-const $LodestoneParticleType$Factory = Java.loadClass('team.lodestar.lodestone.systems.particle.world.type.LodestoneWorldParticleType$Factory');
-
-// const $LodestoneScreenParticleType = require('packages/team/lodestar/lodestone/systems/particle/type/$LodestoneScreenParticleType').$LodestoneScreenParticleType;
-// const $LodestoneScreenParticleType = Java.loadClass('team.lodestar.lodestone.systems.particle.type.LodestoneScreenParticleType');
-const $LodestoneScreenParticleType = Java.loadClass('team.lodestar.lodestone.systems.particle.screen.LodestoneScreenParticleType');
-
-const $LodestoneLib = require('packages/team/lodestar/lodestone/$LodestoneLib').$LodestoneLib
-
-// const $LodestoneScreenParticleType$Factory = require('packages/team/lodestar/lodestone/systems/particle/type/$LodestoneScreenParticleType$Factory').$LodestoneScreenParticleType$Factory;
-// const $LodestoneScreenParticleType$Factory = Java.loadClass('team.lodestar.lodestone.systems.particle.type.LodestoneScreenParticleType$Factory');
-const $LodestoneScreenParticleType$Factory = Java.loadClass('team.lodestar.lodestone.systems.particle.screen.LodestoneScreenParticleType$Factory');
-
-let sapConstructor = require('packages/net/minecraft/client/particle/$SimpleAnimatedParticle').$SimpleAnimatedParticle.__javaObject__.declaredConstructors[0];
-let zero = Java.loadClass("java.lang.Float").valueOf(0);
-
+const $RegistryObject = 
+    Java.loadClass('net.minecraftforge.registries.RegistryObject');
+const $LodestoneScreenParticleRegistry = 
+    Java.loadClass('team.lodestar.lodestone.registry.common.particle.LodestoneScreenParticleRegistry');
+const $LodestoneParticleType$Factory = 
+    Java.loadClass('team.lodestar.lodestone.systems.particle.world.type.LodestoneWorldParticleType$Factory');
+const $LodestoneScreenParticleType = 
+    Java.loadClass('team.lodestar.lodestone.systems.particle.screen.LodestoneScreenParticleType');
+const $LodestoneLib = 
+    Java.loadClass('team.lodestar.lodestone.LodestoneLib')
+const $LodestoneScreenParticleType$Factory = 
+    Java.loadClass('team.lodestar.lodestone.systems.particle.screen.LodestoneScreenParticleType$Factory');
+let sapConstructor = 
+    Java.loadClass('net.minecraft.client.particle.SimpleAnimatedParticle').__javaObject__.declaredConstructors[0];
+let zero = 
+    Java.loadClass("java.lang.Float").valueOf(0);
+let $RegisterParticleProvidersEvent = 
+    Java.loadClass('net.minecraftforge.client.event.RegisterParticleProvidersEvent');
 /**
  * 
  * @param {$RegisterParticleProvidersEvent} event 
  * @param {String[]} List 
  */
-export function registerParticleFactory$Screen(event,List){//TODO maybe use event?
+function registerParticleFactory$Screen(event,List){
+    //TODO maybe use event?
     List.forEach(e => {
         $LodestoneScreenParticleRegistry.registerProvider($LodestoneScreenParticleRegistry.registerType(new $LodestoneScreenParticleType()), new $LodestoneScreenParticleType$Factory($LodestoneScreenParticleRegistry.getSpriteSet($LodestoneLib.lodestonePath(e))));
     });
@@ -42,7 +32,7 @@ export function registerParticleFactory$Screen(event,List){//TODO maybe use even
  * @param {$RegisterParticleProvidersEvent} event 
  * @param {$RegistryObject<$LodestoneParticleType>[]} List
  */
-export function registerParticleFactory(event,List){
+function registerParticleFactory(event,List){
     List.forEach(e => {
         event.registerSpriteSet(e.get(), () => new $LodestoneParticleType$Factory($LodestoneScreenParticleRegistry.getSpriteSet($LodestoneLib.lodestonePath(e.id.getPath()))));
     })

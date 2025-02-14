@@ -1,4 +1,3 @@
-const { $ItemTooltipEventJS } = require("packages/dev/latvian/mods/kubejs/item/$ItemTooltipEventJS")
 
 ItemEvents.tooltip(tooltip => {
 	global.itemTooltipEventKJS(tooltip)
@@ -10,7 +9,7 @@ let tg = 60
 let tb = 100
 /**
  * 
- * @param {$ItemTooltipEventJS} tooltip 
+ * @param {$ItemTooltipEventJS_} tooltip 
  */
 global.itemTooltipEventKJS = (tooltip) => {
 	tooltip.addAdvanced('cai:gdcz_sword', (item, advanced, text) => {

@@ -1,6 +1,5 @@
 // ItemEvents.rightClicked(event => {
 //     let {player,item,server,level} = event
-    
 //     // player.tell([
 //     //         // //为以确定，/**/为不确定和不清楚，待考究，···是该对象的内存地址标识
 //     //         //item.getAllEnchantments(),'__',//输出{对应附魔Class=对应附魔level,对应附魔Class=对应附魔level,...} Obj

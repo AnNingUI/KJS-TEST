@@ -1,10 +1,5 @@
-const { $Player } = require("packages/net/minecraft/world/entity/player/$Player");
-const { $Entity } = require("packages/net/minecraft/world/entity/$Entity");
-const { attackNearby, getOrSource, playAttack, TB_TYPE, getOrSourceByType } = require("./function/attack");
-const { $ItemStack } = require("packages/net/minecraft/world/item/$ItemStack");
-const { $LivingHurtEvent } = require("packages/net/minecraftforge/event/entity/living/$LivingHurtEvent");
-const { $Mob } = require("packages/net/minecraft/world/entity/$Mob");
-const { $DamageTypes } = require("packages/net/minecraft/world/damagesource/$DamageTypes");
+const $Player = Java.loadClass("net.minecraft.world.entity.player.Player");
+const $LivingHurtEvent = Java.loadClass("net.minecraftforge.event.entity.living.LivingHurtEvent");
 
 
 let bool = true;
@@ -17,7 +12,7 @@ let pi = KMath.PI
 
 /**
  * 
- * @param {$Player} player 
+ * @param {$Player_} player 
  */
 function hasSoulInSolts(player) {
 	return hasCuriosItem(player, "cai:soul_talisman");
@@ -26,10 +21,10 @@ function hasSoulInSolts(player) {
 
 let k = 0.28
 /**
- * 
- * @param {$Player} player 
- * @param {Number} n 
- * @param {$Entity} entity
+ *
+ * @param {$Player_} player
+ * @param {Number} n
+ * @param {$LivingEntity_} entity
  */
 function ActualHeal(player, n, entity) { player.heal(entity.health * n) }
 
@@ -159,6 +154,7 @@ ItemEvents.rightClicked(e => {
 NativeEvents.onEvent($LivingHurtEvent, (event) => {
 	const actual = event.getSource().actual;
 	const player = actual instanceof $Player ? actual : null
+	/** @type {import("net/minecraft/world/item.ItemStack").$ItemStack} */ 
 	const HeldItem = (player && player.getHandSlots()[0]) ?? Item.of("wooden_sword")
 	HeldItem !== undefined ? HeldItem : HeldItem = HeldItem
 	let { entity } = event
@@ -166,7 +162,7 @@ NativeEvents.onEvent($LivingHurtEvent, (event) => {
 	let { x, y, z } = entity
 	if (HeldItem !== undefined && HeldItem === "cai:gdcz_sword" && event.entity.type !== null) {
 		if (event.source.getType().toString() === "indirectMagic") return;
-		let Enchantments = /** @type {$ItemStack | undefined} */ (HeldItem).enchantments;
+		let Enchantments = /** @type {import("net/minecraft/world/item.ItemStack").$ItemStack} */(HeldItem).enchantments;
 		let FireAspect = false;
 		let FireAspectLvl = 0;
 		let Sweeping = false;
@@ -369,7 +365,7 @@ PlayerEvents.tick(event => {
 			remove: true
 		}
 	});
-	const getShowText = (a, b) => a < b ? `蓄能中${a}/${b}${"🥵"}` : `蓄能完成${"❤️"}`
+	const getShowText = (a, b) => a < b ? `蓄能中${a}.{b}${"🥵"}` : `蓄能完成${"❤️"}`
 	if (isAnli) {
 		event.player.paint({
 			example_1: {
@@ -414,7 +410,7 @@ ItemEvents.rightClicked(event => {
 		crouchTick = 0;
 		player.swing(event.hand, true);
 		// server.runCommandSilent(`playsound botania:rune_altar_craft block ${player.name} ${player.x} ${player.y} ${player.z} 1 1`)
-		global.PlaySound("cai:music.wrist", 200, 1)
+		player.sendData("cai:music.wrist", 200, 1)
 		// console.log(damage)
 		for (let j = 0; j < 10; j++) {
 			delay(server, () => {
@@ -432,7 +428,11 @@ ItemEvents.rightClicked(event => {
 })
 
 
-
+/**
+ * 
+ * @param {$ItemStack_} HeldItem 
+ * @returns 
+ */
 function EnCh(HeldItem) {
 	if (HeldItem != undefined) {
 		let Enchantments = HeldItem.enchantments;
@@ -492,7 +492,7 @@ NativeEvents.onEvent($LivingHurtEvent, event => {
 
 /**
  * 
- * @param {import("packages/net/minecraft/world/entity/$LivingEntity").$LivingEntity$Type} entity 
+ * @param {import("net/minecraft/world/entity.LivingEntity").$LivingEntity$Type} entity 
  * @returns {number}
  */
 const getDamageReduction = (entity) => {

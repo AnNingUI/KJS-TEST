@@ -1,24 +1,15 @@
-const { $PoseStack } = require("packages/com/mojang/blaze3d/vertex/$PoseStack");
-const { $Axis } = require("packages/com/mojang/math/$Axis");
-const { $OverlayTexture } = require("packages/net/minecraft/client/renderer/texture/$OverlayTexture");
-const { $ItemDisplayContext } = require("packages/net/minecraft/world/item/$ItemDisplayContext");
-const { $ItemStack } = require("packages/net/minecraft/world/item/$ItemStack");
-const { $Vec3 } = require("packages/net/minecraft/world/phys/$Vec3");
+const $Axis = Java.loadClass("com.mojang.math.Axis");
+const $ItemStack = Java.loadClass("net.minecraft.world.item.ItemStack");
+const $Vec3 = Java.loadClass("net.minecraft.world.phys.Vec3");
 
 let Item1;
 let Vec3_1;
-NetworkEvents.dataReceived("magicDamage", (e) => {
+NetworkEvents.dataReceived("kubejs:magic_damage", (e) => {
     const { data, level } = e;
-    // console.log(data);
     const { x, y, z } = data.pos;
     if (!Client.level) return;
     const server = Utils.getServer();
     const show = (st, et) => {
-        // renderItemAtWorldPosition(
-        //     Item.of("bamboo", t),
-        //     new $Vec3(x,y,z),
-        //     0
-        // )
         Item1 = Item.of("kubejs:magic_book", st)
         Vec3_1 = new $Vec3(x, y + 0.2, z);
         if (st >= et - 10) {
@@ -75,7 +66,7 @@ RenderJSEvents.AddWorldRender((e) => {
                 offset.get("y"),
                 offset.get("z")
             );
-            
+
             poseStack.scale(4.5, 4.5, 4.5)
             let time = Date.now();
             let angle = (time / 10) % 360;
@@ -91,7 +82,7 @@ RenderJSEvents.AddWorldRender((e) => {
 /**
  * 在服务器中延迟执行函数
  * 
- * @param {import("packages/net/minecraft/server/$MinecraftServer").$MinecraftServer$Type} server - Minecraft 服务器对象
+ * @param {import("net/minecraft/server.MinecraftServer").$MinecraftServer$Type} server - Minecraft 服务器对象
  * @param { ((sTick: number) => {}) } fun - 要执行的函数
  * @param {number} sTick - 当前的 tick 计数
  * @param {number} eTick - 结束的 tick 计数
@@ -104,3 +95,7 @@ const delayFun = (server, fun, sTick, eTick, delayTick) => {
         sTick < eTick && delayFun(server, fun, sTick, eTick, delayTick);
     })
 }
+
+
+
+

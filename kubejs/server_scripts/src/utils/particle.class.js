@@ -1,7 +1,3 @@
-const { $ExplosionEventJS$After } = require("packages/dev/latvian/mods/kubejs/level/$ExplosionEventJS$After")
-const { $Player } = require("packages/net/minecraft/world/entity/player/$Player")
-
-
 const ParticleType = {
     WISP           : "WISP",
     SMOKE          : "SMOKE",
@@ -20,7 +16,7 @@ const ParticleType = {
 
 /**
  * 
- * @param {$ExplosionEventJS$After} event 
+ * @param {import("packages/dev/latvian/mods/kubejs/player/$PlayerEventJS").$PlayerEventJS$Type} event 
  */
 function Particle(event) {
     const { level } = event
@@ -85,26 +81,26 @@ function Particle(event) {
     this.spawn = function (amount) {
         count = amount
         level.getPlayers().forEach(player => {
-            /**@type {$Player} */(player).sendData('particle', {
-                type: particleType,
-                x: position[0],
-                y: position[1],
-                z: position[2],
-                motionX: motion[0],
-                motionY: motion[1],
-                motionZ: motion[2],
-                randomMotionX: randomMotion[0],
-                randomMotionY: randomMotion[1],
-                randomMotionZ: randomMotion[2],
-                randomOffset: randomOffset,
-                count: count,
-                lifetime: lifetime,
-                scaleStart: scaleData[0],
-                scaleEnd: scaleData[1],
-                colorStart: colorStart,
-                colorEnd: colorEnd,
-                transparencyStart: transparencyData[0],
-                transparencyEnd: transparencyData[1]
+            /**@type {$Player_} */(player).sendData('ld:particle', {
+                pType             : particleType,
+                x                 : position[0],
+                y                 : position[1],
+                z                 : position[2],
+                motionX           : motion[0],
+                motionY           : motion[1],
+                motionZ           : motion[2],
+                randomMotionX     : randomMotion[0],
+                randomMotionY     : randomMotion[1],
+                randomMotionZ     : randomMotion[2],
+                randomOffset      : randomOffset,
+                count             : count,
+                lifetime          : lifetime,
+                scaleStart        : scaleData[0],
+                scaleEnd          : scaleData[1],
+                colorStart        : colorStart,
+                colorEnd          : colorEnd,
+                transparencyStart : transparencyData[0],
+                transparencyEnd   : transparencyData[1]
             })
         })
         return this

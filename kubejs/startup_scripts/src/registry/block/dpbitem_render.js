@@ -1,12 +1,12 @@
 // startup_scripts
 
 
-const { $Axis } = require("packages/com/mojang/math/$Axis");
-const { $BlockEntityJS } = require("packages/dev/latvian/mods/kubejs/block/entity/$BlockEntityJS");
-const { $RenderType } = require("packages/net/minecraft/client/renderer/$RenderType");
-const { $TextureAtlas } = require("packages/net/minecraft/client/renderer/texture/$TextureAtlas");
-const { $ItemDisplayContext } = require("packages/net/minecraft/world/item/$ItemDisplayContext");
-const { $IClientFluidTypeExtensions } = require("packages/net/minecraftforge/client/extensions/common/$IClientFluidTypeExtensions");
+const $Axis = Java.loadClass("com.mojang.math.Axis");
+
+const $RenderType = Java.loadClass("net.minecraft.client.renderer.RenderType");
+const $TextureAtlas = Java.loadClass("net.minecraft.client.renderer.texture.TextureAtlas");
+const $ItemDisplayContext = Java.loadClass("net.minecraft.world.item.ItemDisplayContext");
+const $IClientFluidTypeExtensions = Java.loadClass("net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions");
 
 
 const OMMMMO = 0;

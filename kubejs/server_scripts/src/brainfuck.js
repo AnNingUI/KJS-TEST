@@ -1,11 +1,11 @@
 let BOOLE = false
-function isValidString(inputString) {
-  return /^[+-\.,<>\[\] ]+$/.test(inputString);
+function isValidString(/** @type {String} */inputString) {
+  return /^[+-.,<>\[\] ]+$/.test(inputString);
 }
 
 BlockEvents.rightClicked('minecraft:command_block', event => {
     let { player, block } = event
-    if(!player.creative && block.offset(0,-1,0).id == 'minecraft:white_terracotta'){
+    if(!player.creative && block.offset(0,-1,0).id === 'minecraft:white_terracotta'){
       if(!BOOLE){
           player.swing('MAIN_HAND', true);
           const Command = event.block.getEntityData().Command

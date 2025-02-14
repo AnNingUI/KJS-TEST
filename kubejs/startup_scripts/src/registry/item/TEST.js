@@ -3,7 +3,7 @@ StartupEvents.registry("item", (event) => {
     const a = event.create(
         "module_create_energy_unit", "mek_unit"
     )
-    // KJS-MEK 1.20.1 - github 
+    
     // === MekUnitItemBuilder ===
     
     a.setSlot("all")

@@ -1,5 +1,4 @@
-const { $Vec3 } = require("packages/net/minecraft/world/phys/$Vec3");
-const { attackNearby, getOrSource } = require("./function/attack");
+
 
 ItemEvents.rightClicked('kubejs:magic_book', (e) => {
     const { player, server, level } = e;
@@ -7,7 +6,7 @@ ItemEvents.rightClicked('kubejs:magic_book', (e) => {
     const { x, y, z } = player;
     if (e.player.cooldowns.isOnCooldown(e.item)) return;
     player.swing(e.hand, true);
-    player.sendData("magicDamage", {
+    player.sendData("kubejs:magic_damage", {
         type: "fiery_ingot",
         pos: {
             x: x,
@@ -16,11 +15,11 @@ ItemEvents.rightClicked('kubejs:magic_book', (e) => {
         }
     });
 
-    const { cos, sin, sqrt, abs, sinh, cosh, random } = Math;
+    const { cos, sin, sqrt, abs, sinh, cosh, random } = JavaMath;
 
     let t_particle = new Particle(e);
     t_particle.type("SOUL");
-    t_particle.colorData([179, 80, 82], [112, 115, 51].map(e => e * Math.random() * 2));
+    t_particle.colorData([179, 80, 82], [112, 115, 51].map(e => e * random() * 2));
     t_particle.motion(0, 0.05, 0);
     t_particle.scaleData(0.5, 0);
     t_particle.transparencyData(0.5, 0);
@@ -97,7 +96,7 @@ ItemEvents.rightClicked('kubejs:magic_book', (e) => {
                                     const estepY = edy / elength;
                                     const estepZ = edz / elength;
                                     random() > 0.5 && NoPlayList.length < 20 && Et.moveTo(
-                                        new $Vec3(
+                                        new Vec3d(
                                             et.getX() + estepX * 0.005,
                                             et.getY() + estepY * 0.005,
                                             et.getZ() + estepZ * 0.005

@@ -1,38 +1,25 @@
-const { $RenderJSBlockEntityRenderer } = require("packages/com/chen1335/renderjs/client/renderer/$RenderJSBlockEntityRenderer")
-const { $RenderJSBlockEntityRenderer$Context } = require("packages/com/chen1335/renderjs/client/renderer/$RenderJSBlockEntityRenderer$Context")
-const { $PoseStack } = require("packages/com/mojang/blaze3d/vertex/$PoseStack")
-const { $VertexConsumer } = require("packages/com/mojang/blaze3d/vertex/$VertexConsumer")
-const { $Axis } = require("packages/com/mojang/math/$Axis")
-const { $BlockEntityJS } = require("packages/dev/latvian/mods/kubejs/block/entity/$BlockEntityJS")
-const { $Optional } = require("packages/java/util/$Optional")
-const { $FluidTankFluidTank } = require("packages/mekanism/common/capabilities/fluid/$FluidTankFluidTank")
-const { $MultiBufferSource } = require("packages/net/minecraft/client/renderer/$MultiBufferSource")
-const { $RenderType } = require("packages/net/minecraft/client/renderer/$RenderType")
-const { $ShaderInstance } = require("packages/net/minecraft/client/renderer/$ShaderInstance")
-const { $BakedQuad } = require("packages/net/minecraft/client/renderer/block/model/$BakedQuad")
-const { $BlockEntityRenderDispatcher } = require("packages/net/minecraft/client/renderer/blockentity/$BlockEntityRenderDispatcher")
-const { $BlockEntityRenderer } = require("packages/net/minecraft/client/renderer/blockentity/$BlockEntityRenderer")
-const { $OverlayTexture } = require("packages/net/minecraft/client/renderer/texture/$OverlayTexture")
-const { $TextureAtlas } = require("packages/net/minecraft/client/renderer/texture/$TextureAtlas")
-const { $MinecraftServer } = require("packages/net/minecraft/server/$MinecraftServer")
-const { $RandomSource } = require("packages/net/minecraft/util/$RandomSource")
-const { $SimpleMenuProvider } = require("packages/net/minecraft/world/$SimpleMenuProvider")
-const { $Inventory } = require("packages/net/minecraft/world/entity/player/$Inventory")
-const { $CraftingMenu } = require("packages/net/minecraft/world/inventory/$CraftingMenu")
-const { $ItemDisplayContext } = require("packages/net/minecraft/world/item/$ItemDisplayContext")
-const { $ItemStack } = require("packages/net/minecraft/world/item/$ItemStack")
-const { $BlockEntity } = require("packages/net/minecraft/world/level/block/entity/$BlockEntity")
-const { $EnchantmentTableBlockEntity } = require("packages/net/minecraft/world/level/block/entity/$EnchantmentTableBlockEntity")
-const { $FurnaceBlockEntity } = require("packages/net/minecraft/world/level/block/entity/$FurnaceBlockEntity")
-const { $IClientFluidTypeExtensions } = require("packages/net/minecraftforge/client/extensions/common/$IClientFluidTypeExtensions")
-const { $LodestoneParticleRegistry: LodestoneParticleRegistry } = require("packages/team/lodestar/lodestone/registry/common/particle/$LodestoneParticleRegistry")
-const { $SimpleParticleOptions: SimpleParticleOptions } = require("packages/team/lodestar/lodestone/systems/particle/$SimpleParticleOptions")
-const { $WorldParticleBuilder: WorldParticleBuilder } = require("packages/team/lodestar/lodestone/systems/particle/builder/$WorldParticleBuilder")
-const { $GenericParticleData: GenericParticleData } = require("packages/team/lodestar/lodestone/systems/particle/data/$GenericParticleData")
-const { $ColorParticleData: ColorParticleData } = require("packages/team/lodestar/lodestone/systems/particle/data/color/$ColorParticleData")
-const { $LodestoneWorldParticleRenderType: LodestoneWorldParticleRenderType } = require("packages/team/lodestar/lodestone/systems/particle/render_types/$LodestoneWorldParticleRenderType")
-const $FluidRenderer = Java.loadClass("com.simibubi.create.foundation.fluid.FluidRenderer")
-const Color = require("packages/java/awt/$Color").$Color
+const $RenderJSBlockEntityRenderer     
+    = Java.loadClass("com.chen1335.renderjs.client.renderer.RenderJSBlockEntityRenderer")
+const $Axis                            
+    = Java.loadClass("com.mojang.math.Axis")
+const $RenderType                      
+    = Java.loadClass("net.minecraft.client.renderer.RenderType")
+const $ItemDisplayContext              
+    = Java.loadClass("net.minecraft.world.item.ItemDisplayContext")
+const LodestoneParticleRegistry        
+    = Java.loadClass("team.lodestar.lodestone.registry.common.particle.LodestoneParticleRegistry")
+const SimpleParticleOptions            
+    = Java.loadClass("team.lodestar.lodestone.systems.particle.SimpleParticleOptions")
+const WorldParticleBuilder             
+    = Java.loadClass("team.lodestar.lodestone.systems.particle.builder.WorldParticleBuilder")
+const GenericParticleData              
+    = Java.loadClass("team.lodestar.lodestone.systems.particle.data.GenericParticleData")
+const ColorParticleData                
+    = Java.loadClass("team.lodestar.lodestone.systems.particle.data.color.ColorParticleData")
+const LodestoneWorldParticleRenderType 
+    = Java.loadClass("team.lodestar.lodestone.systems.particle.render_types.LodestoneWorldParticleRenderType")
+const Color                            
+    = Java.loadClass("java.awt.Color")
 
 const y_s = generateArray(-2.0,2.0,0.1)
 const points = y_s.map((y) => {
@@ -124,10 +111,14 @@ function KjsColor(rgba) {
  * @function
  * @name someMethod
  */
-KjsColor.prototype.getRGB = function() {
-    return this.color.getRGB();
-};
-
+// KjsColor.prototype.getRGB = function() {
+//     return this.color.getRGB();
+// };
+KjsColor.prototype = {
+    getRGB: function() {
+        return this.color.getRGB();
+    }
+}
 
 
 RenderJSEvents.RegisterItemDecorations(event=>{
@@ -220,98 +211,6 @@ if (global.inited) {
             let posY = pos.y;
             let posZ = pos.z;
 
-            // ou_test_renderer.blockEntityRenderDispatcher.renderItem(
-            //     blockEntity,
-            //     poseStack,
-            //     bufferSource,
-            //     light,
-            //     packedOverlay
-            // )
-            
-            // // 1 // RED
-            // poseStack.pushPose();
-            // let t1 = rotatePoint(1,0.5,1,0.5,angle,rx, ry, rz)
-            // poseStack.translate(t1[0],t1[1],t1[2])
-            // r.itemRenderer.renderStatic(i1, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-            // //2 // GREEN
-            // poseStack.pushPose();
-            // let t2 = rotatePoint(2,0.5,1,0.5,angle,rx, ry, rz)
-            // poseStack.translate(t2[0],t2[1],t2[2])
-            // r.itemRenderer.renderStatic(i2, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-            // //3 // BLUE
-            // poseStack.pushPose();
-            // let t3 = rotatePoint(3,0.5,1,0.5,angle,rx, ry, rz)
-            // poseStack.translate(t3[0],t3[1],t3[2])
-            // r.itemRenderer.renderStatic(i3, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-            // //4 // YELLOW  // *
-            // poseStack.pushPose();
-            // let t4 = rotatePoint(4,0.5,1,0.5,angle,rx, ry, rz)
-            // poseStack.translate(t4[0],t4[1],t4[2])
-            // r.itemRenderer.renderStatic(i4, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-            // //5 // WHITE // *
-            // poseStack.pushPose();
-            // let t5 = rotatePoint(5,0.5,1,0.5,angle,rx, ry, rz)
-            // poseStack.translate(t5[0],t5[1],t5[2])
-            // r.itemRenderer.renderStatic(i5, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-            // //6 // BLACK // *
-            // poseStack.pushPose();
-            // let t6 = rotatePoint(6,0.5,1,0.5,angle,rx, ry, rz)
-            // poseStack.translate(t6[0],t6[1],t6[2])
-            // r.itemRenderer.renderStatic(i6, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-            // //7 // BROWN
-            // poseStack.pushPose();
-            // let t7 = rotatePoint(7,0.5,1,0.5,angle,rx, ry, rz)
-            // poseStack.translate(t7[0],t7[1],t7[2])
-            // r.itemRenderer.renderStatic(i7, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-            // //8 // LIGHT_GRAY
-            // poseStack.pushPose();
-            // let t8 = rotatePoint(8,0.5,1,0.5,angle,rx, ry, rz)
-            // poseStack.translate(t8[0],t8[1],t8[2])
-            // r.itemRenderer.renderStatic(i8, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-            // poseStack.pushPose();
-            // let t9 = rotatePointAroundAxis(
-            //     {x: 0.5, y: 0, z:0.5},
-            //     {x: 0.5, y: 0.5, z: 0.5},
-            //     {x: -angle, y: -1, z: angle},
-            //     angle
-            // )
-            // // console.log(t9)
-            // let i9 = getRandomValueFromArray([i1,i2,i3,i4,i5,i6,i7,i8])
-            // poseStack.translate(t9.x,t9.y,t9.z)
-            // poseStack.scale(angle/360 * get0or1(),angle/360 * get0or1(),angle/360 * get0or1())
-            // r.itemRenderer.renderStatic(i9, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
-
-
-            // poseStack.pushPose();
-            // let t10 = rotatePointAroundAxis(
-            //     {x: 0.5, y: 0, z:0.5},
-            //     {x: 0.5, y: 0.5, z: 0.5},
-            //     {x: angle, y: 1, z: angle},
-            //     angle
-            // )
-            // // console.log(t9)
-            // let i10 = getRandomValueFromArray([i1,i2,i3,i4,i5,i6,i7,i8])
-            // poseStack.translate(t10.x,t10.y,t10.z)
-            // poseStack.scale(angle/360 * get0or1(),angle/360 * get0or1(),angle/360 * get0or1())
-            // r.itemRenderer.renderStatic(i10, "ground", light, packedOverlay, poseStack, bufferSource, Client.level, Client.player.getId())
-            // poseStack.popPose();
             function devUse() {
                 let axis = axisSelector(angle)
                 let end = endSelector()
@@ -342,13 +241,6 @@ if (global.inited) {
                     y: posY + t11.y,
                     z: posZ + t11.z
                 }
-                // Client.level.addParticle(
-                //     "lodestone:star",
-                //     offsetPos.x,
-                //     offsetPos.y + 0.01,
-                //     offsetPos.z,
-                //     0,0,0
-                // )
                 WorldParticleBuilder.create(LodestoneParticleRegistry.TWINKLE_PARTICLE)
                     .setTransparencyData(GenericParticleData.create(1, 0).build())
                     .setScaleData(GenericParticleData.create(0.25, 0).build())

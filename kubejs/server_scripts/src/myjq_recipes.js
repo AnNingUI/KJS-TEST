@@ -1,5 +1,5 @@
-const { $FluidStackJS } = require("packages/dev/latvian/mods/kubejs/fluid/$FluidStackJS");
-const { $ItemStack } = require("packages/net/minecraft/world/item/$ItemStack");
+const $FluidStackJS = Java.loadClass("dev.latvian.mods.kubejs.fluid.FluidStackJS");
+const $ItemStack = Java.loadClass("net.minecraft.world.item.ItemStack");
 
 global.myjqRecipes = [
 	{
@@ -54,7 +54,7 @@ global.myjqRecipes = [
  * A class to create custom recipes for myjq.
  * @constructor
  */
-function createMyjqRecipe() {
+function CMyjqRecipe() {
     /**
      * The recipe type, either 'item' or 'fluid'.
      * @type {string}
@@ -63,18 +63,18 @@ function createMyjqRecipe() {
 
     /**
      * The input items and fluids for the recipe.
-     * @type {{item: $ItemStack[], fluid: $FluidStackJS[]}}
+     * @type {{item: $ItemStack_[], fluid: $FluidStackJS_[]}}
      */
     this.input = { item: [], fluid: [] };
 
     /**
      * The output of the recipe, either an item or a fluid.
-     * @type {$ItemStack|$FluidStackJS|undefined}
+     * @type {$ItemStack_|$FluidStackJS_|undefined}
      */
     this.output = undefined;
 
     /**
-     * The time required to complete the recipe, in ticks.
+     * The time Java.loadClassd to complete the recipe, in ticks.
      * @type {number}
      */
     this.tick = 0;
@@ -88,20 +88,20 @@ function createMyjqRecipe() {
 
 /**
  * Sets the input items for the recipe.
- * @param {$ItemStack[]} items - An array of item stacks to be used as inputs.
- * @returns {createMyjqRecipe} The current recipe instance.
+ * @param {$ItemStack_[]} items - An array of item stacks to be used as inputs.
+ * @returns {CMyjqRecipe} The current recipe instance.
  */
-createMyjqRecipe.prototype.inputItems = function(items) {
+CMyjqRecipe.prototype.inputItems = function(items) {
     this.input.item = items;
     return this;
 };
 
 /**
  * Sets the input fluids for the recipe.
- * @param {$FluidStackJS[]} fluids - An array of fluid stacks to be used as inputs.
- * @returns {createMyjqRecipe} The current recipe instance.
+ * @param {$FluidStackJS_[]} fluids - An array of fluid stacks to be used as inputs.
+ * @returns {CMyjqRecipe} The current recipe instance.
  */
-createMyjqRecipe.prototype.inputFluids = function(fluids) {
+CMyjqRecipe.prototype.inputFluids = function(fluids) {
     this.input.fluid = fluids;
     return this;
 };
@@ -109,11 +109,11 @@ createMyjqRecipe.prototype.inputFluids = function(fluids) {
 /**
  * Sets the output for the recipe.
  * The output can be either an item or a fluid stack.
- * @param {$ItemStack|$FluidStackJS} output - The output of the recipe.
- * @returns {createMyjqRecipe} The current recipe instance.
+ * @param {$ItemStack_|$FluidStackJS_} output - The output of the recipe.
+ * @returns {CMyjqRecipe} The current recipe instance.
  * @throws {Error} If the output is not a valid $ItemStack or $FluidStackJS.
  */
-createMyjqRecipe.prototype.setOutput = function(output) {
+CMyjqRecipe.prototype.setOutput = function(output) {
     if (output instanceof $ItemStack || output instanceof $FluidStackJS) {
         this.output = output;
         this.rType = output instanceof $ItemStack ? "item" : "fluid";
@@ -124,11 +124,11 @@ createMyjqRecipe.prototype.setOutput = function(output) {
 };
 
 /**
- * Sets the time required to complete the recipe.
+ * Sets the time Java.loadClassd to complete the recipe.
  * @param {integer} tick - The time in ticks.
- * @returns {createMyjqRecipe} The current recipe instance.
+ * @returns {CMyjqRecipe} The current recipe instance.
  */
-createMyjqRecipe.prototype.setTick = function(tick) {
+CMyjqRecipe.prototype.setTick = function(tick) {
     this.tick = tick;
     return this;
 };
@@ -139,7 +139,7 @@ createMyjqRecipe.prototype.setTick = function(tick) {
  * @param {string} id - The unique identifier for the recipe.
  * @returns {void}
  */
-createMyjqRecipe.prototype.setId = function(id) {
+CMyjqRecipe.prototype.setId = function(id) {
     const ids = global.myjqRecipes.map(r => r.id);
     if (!ids.includes(id)) {
 		this.id = id;
@@ -165,7 +165,7 @@ createMyjqRecipe.prototype.setId = function(id) {
 // }
 
 
-// new createMyjqRecipe().inputItems(
+// new CMyjqRecipe().inputItems(
 //     [
 //         Item.of("kubejs:pedestal",32),
 //         Item.of("apple", 32)

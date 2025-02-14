@@ -1,32 +1,19 @@
-const { $ArrayList } = require("packages/java/util/$ArrayList");
-const { $IRecipeLayoutBuilder } = require("packages/mezz/jei/api/gui/builder/$IRecipeLayoutBuilder");
-const { $GuiGraphics } = require("packages/net/minecraft/client/gui/$GuiGraphics");
-const { $CustomJSRecipe } = require("packages/pie/ilikepiefoo/compat/jei/impl/$CustomJSRecipe");
 
-const { $Entity } = require("packages/net/minecraft/world/entity/$Entity");
-const { $Level } = require("packages/net/minecraft/world/level/$Level");
-const { $AnimatedKinetics } = require("packages/com/simibubi/create/compat/jei/category/animations/$AnimatedKinetics");
-const { $Axis } = require("packages/com/mojang/math/$Axis");
-const { $BlockPos } = require("packages/net/minecraft/core/$BlockPos");
-const { $OverlayTexture } = require("packages/net/minecraft/client/renderer/texture/$OverlayTexture");
-const { $ItemDisplayContext } = require("packages/net/minecraft/world/item/$ItemDisplayContext");
-const { $Block } = require("packages/net/minecraft/world/level/block/$Block");
-const { $ItemStack } = require("packages/net/minecraft/world/item/$ItemStack");
-const { $FluidStackJS } = require("packages/dev/latvian/mods/kubejs/fluid/$FluidStackJS");
-const { $IGuiHelper } = require("packages/mezz/jei/api/helpers/$IGuiHelper");
-const { $RenderSystem } = require("packages/com/mojang/blaze3d/systems/$RenderSystem");
-const { $Component } = require("packages/net/minecraft/network/chat/$Component");
-const { $Font } = require("packages/net/minecraft/client/gui/$Font");
-const { $Font$DisplayMode } = require("packages/net/minecraft/client/gui/$Font$DisplayMode");
-const { $List } = require("packages/java/util/$List");
-const { $ClientTooltipComponent } = require("packages/net/minecraft/client/gui/screens/inventory/tooltip/$ClientTooltipComponent");
-const { $ClientTooltipPositioner } = require("packages/net/minecraft/client/gui/screens/inventory/tooltip/$ClientTooltipPositioner");
-const { $PatchouliAPI: PatchouliAPI } = require("packages/vazkii/patchouli/api/$PatchouliAPI");
+const $Entity                 
+	= Java.loadClass("net.minecraft.world.entity.Entity");
+const $Level                  
+	= Java.loadClass("net.minecraft.world.level.Level");
+const $AnimatedKinetics       
+	= Java.loadClass("com.simibubi.create.compat.jei.category.animations.AnimatedKinetics");
+const $Axis                   
+	= Java.loadClass("com.mojang.math.Axis");
+const $ItemStack              
+	= Java.loadClass("net.minecraft.world.item.ItemStack");
+const $Font$DisplayMode       
+	= Java.loadClass("net.minecraft.client.gui.Font$DisplayMode");
+const $ClientTooltipComponent 
+	= Java.loadClass("net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent");
 
-const $String = Java.loadClass("java.lang.String");
-const $Integer = Java.loadClass("java.lang.Integer");
-
-const $Int = $Integer.TYPE
 
 const setLevelMethod = $Entity.__javaObject__.getDeclaredMethod("m_284535_", $Level);
 setLevelMethod.setAccessible(true);
@@ -156,8 +143,8 @@ global.handleEntityLookup = (builder) => {
 }
 /**
  * 
- * @param {$CustomJSRecipe} r 
- * @param {$GuiGraphics} guiGraphics 
+ * @param {$CustomJSRecipe_} r 
+ * @param {$GuiGraphics_} guiGraphics 
  */
 global.renderEntityRecipe = (r, guiGraphics) => {
 	guiGraphics.drawWordWrap(Client.font, Text.translatable(r.data.description), 0, 5, 100, 0);
@@ -204,9 +191,9 @@ https://github.com/Creators-of-Create/Create/blob/mc1.20.1/dev/src/main/java/com
 
 /**
  * 
- * @param {$CustomJSRecipe} r 
- * @param {$GuiGraphics} graphics 
- * @param {$ArrayList<{get: $Block, pos: $BlockPos}>} mutblocks
+ * @param {$CustomJSRecipe_} r 
+ * @param {$GuiGraphics_} graphics 
+ * @param {$ArrayList_<{get: $Block_, pos: $BlockPos_}>} mutblocks
  * @param {boolean} canRotation
  * @param {number} renderScale
  * @param {{x: number, y: number, z: number}} offset
@@ -225,7 +212,7 @@ global.draw = ( r, graphics, mutblocks, canRotation, renderScale, offset, angle 
     let scale = renderScale;
 	matrixStack.scale(scale, scale, scale)
 	matrixStack.translate(offset.x + 10, offset.y + 2, offset.z + 5);
-	let mub = /**@type {{get: $Block, pos: $BlockPos}[]} */(mutblocks)
+	let mub = /**@type {{get: $Block_, pos: $BlockPos_}[]} */(mutblocks)
 	mub.forEach(block => {
         canRotation ? matrixStack.pushPose() : {};
 		let {x,y,z} = block.pos
@@ -249,8 +236,8 @@ global.draw = ( r, graphics, mutblocks, canRotation, renderScale, offset, angle 
 
 /**
  * 
- * @param {$CustomJSRecipe} r 
- * @param {$GuiGraphics} graphics 
+ * @param {$CustomJSRecipe_} r 
+ * @param {$GuiGraphics_} graphics 
  */
 global.drawObsidian = (r, graphics) => {
 	return global.draw(r, graphics, [
@@ -269,11 +256,11 @@ global.drawObsidian = (r, graphics) => {
 
 /**
  * 
- * @param {$CustomJSRecipe} r 
- * @param {$GuiGraphics} graphics 
+ * @param {$CustomJSRecipe_} r 
+ * @param {$GuiGraphics_} graphics 
  */
 global.drawMagic = (r, graphics) => {
-	let re = /**@type {{rType: String, input: {item: $ItemStack[], fluid: $FluidStackJS[]}, output: $ItemStack | $FluidStackJS, tick: integer, id: String}} */(r.data.recipes);
+	let re = /**@type {{rType: String, input: {item: $ItemStack_[], fluid: $FluidStackJS_[]}, output: $ItemStack_ | $FluidStackJS_, tick: integer, id: String}} */(r.data.recipes);
 	let type = re.rType;
 	let id = re.id;
 	let angle = 65.5;
@@ -414,8 +401,8 @@ global.drawMagic = (r, graphics) => {
 
 /**
  * 
- * @param {$IRecipeLayoutBuilder} builder 
- * @param {$CustomJSRecipe} r 
+ * @param {$IRecipeLayoutBuilder_} builder 
+ * @param {$CustomJSRecipe_} r 
  */
 global["handlemultiBlockLookup"] = (builder, r) => {
 	builder.setShapeless()
@@ -434,8 +421,8 @@ global["handlemultiBlockLookup"] = (builder, r) => {
 
 /**
  * 
- * @param {$IRecipeLayoutBuilder} builder 
- * @param {$CustomJSRecipe} r 
+ * @param {$IRecipeLayoutBuilder_} builder 
+ * @param {$CustomJSRecipe_} r 
  */
 global["magicBlockLookup"] = (builder, r) => {
 	// builder.setShapeless();
@@ -446,7 +433,7 @@ global["magicBlockLookup"] = (builder, r) => {
 
 	const HORIZONTALLINE = 85;
 
-	let re = /**@type {{rType: String, input: {item: $ItemStack[], fluid: $FluidStackJS[]}, output: $ItemStack | $FluidStackJS, tick: integer, id: String}} */(r.data.recipes);
+	let re = /**@type {{rType: String, input: {item: $ItemStack_[], fluid: $FluidStackJS_[]}, output: $ItemStack_ | $FluidStackJS_, tick: integer, id: String}} */(r.data.recipes);
 	// console.log(re);
 	let inputItems = re.input.item;
 	let inputFluids = re.input.fluid;
@@ -526,8 +513,8 @@ let r = {
 
 /**
  * 
- * @param {$GuiGraphics} graphics 
- * @param {$Font} font 
+ * @param {$GuiGraphics_} graphics 
+ * @param {$Font_} font 
  * @param {string} string 
  * @param {integer} i 
  * @param {integer} j 
@@ -550,12 +537,12 @@ function drawString(graphics, font, string, i, j, k, bl) {
 
 /**
  * 
- * @param {$GuiGraphics} graphics 
- * @param {$Font} font 
- * @param {$List<$ClientTooltipComponent> } list 
+ * @param {$GuiGraphics_} graphics 
+ * @param {$Font_} font 
+ * @param {$List_<$ClientTooltipComponent_> } list 
  * @param {integer} i 
  * @param {integer} j 
- * @param {$ClientTooltipPositioner} clientTooltipPositioner 
+ * @param {$ClientTooltipPositioner_} clientTooltipPositioner 
  */
 function renderTooltipInternal(graphics, font, list, i, j, clientTooltipPositioner) {
 	if (!list.isEmpty()) {
@@ -607,9 +594,9 @@ let $Lists = Java.loadClass("com.google.common.collect.Lists")
 let $Collectors = Java.loadClass("java.util.stream.Collectors");
 /**
  * 
- * @param {$GuiGraphics} graphics 
- * @param {$Font} font 
- * @param {$List<$Component>} list 
+ * @param {$GuiGraphics_} graphics 
+ * @param {$Font_} font 
+ * @param {$List_<$Component_>} list 
  * @param {integer} i 
  * @param {integer} j 
  */

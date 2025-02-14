@@ -1,7 +1,5 @@
-const { $ParticleTypes } = require('packages/net/minecraft/core/particles/$ParticleTypes');
-const { $Level } = require('packages/org/slf4j/event/$Level');
 
-let $ParticleUtils = require('packages/com/cerbon/cerbons_api/api/static_utilities/$ParticleUtils').$ParticleUtils
+const $ParticleUtils = Java.loadClass('com.cerbon.cerbons_api.api.static_utilities.ParticleUtils')
 
 
 
@@ -153,8 +151,8 @@ global.raydrawLine_Ld = (x1, y1, z1, x2, y2, z2, time, worldparticle, server, li
  * @param {number} y2 
  * @param {number} z2 
  * @param {number} time
- * @param {$ParticleTypes} particle
- * @param {$Level} level
+ * @param {$ParticleTypes_} particle
+ * @param {$Level_} level
  */
 global.raydrawLine_Cs = (x1, y1, z1, x2, y2, z2, time, endtiem, particle, level) => {
 	let s = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));

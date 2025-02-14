@@ -1,17 +1,12 @@
-const { $CommandSourceStack } = require('packages/net/minecraft/commands/$CommandSourceStack')
-const { $BlockPos$MutableBlockPos } = require('packages/net/minecraft/core/$BlockPos$MutableBlockPos')
-const { $MinecraftServer } = require('packages/net/minecraft/server/$MinecraftServer')
-const { $ServerPlayer } = require('packages/net/minecraft/server/level/$ServerPlayer')
-const { $Level } = require('packages/org/slf4j/event/$Level')
 
-const { $IntegerArgumentType } = require("packages/com/mojang/brigadier/arguments/$IntegerArgumentType")
-const { $ResourceArgument } = require("packages/net/minecraft/commands/arguments/$ResourceArgument")
-const { $Registries } = require("packages/net/minecraft/core/registries/$Registries")
-const { $SuggestionProviders } = require("packages/net/minecraft/commands/synchronization/$SuggestionProviders")
-const { $Vec3Argument } = require("packages/net/minecraft/commands/arguments/coordinates/$Vec3Argument")
-const { $CompoundTagArgument } = require("packages/net/minecraft/commands/arguments/$CompoundTagArgument")
-const { $CompoundTag } = require("packages/net/minecraft/nbt/$CompoundTag")
-const { $SummonCommand } = require("packages/net/minecraft/server/commands/$SummonCommand")
+const $IntegerArgumentType = Java.loadClass("com.mojang.brigadier.arguments.IntegerArgumentType")
+const $ResourceArgument = Java.loadClass("net.minecraft.commands.arguments.ResourceArgument")
+const $Registries = Java.loadClass("net.minecraft.core.registries.Registries")
+const $SuggestionProviders = Java.loadClass("net.minecraft.commands.synchronization.SuggestionProviders")
+const $Vec3Argument = Java.loadClass("net.minecraft.commands.arguments.coordinates.Vec3Argument")
+const $CompoundTagArgument = Java.loadClass("net.minecraft.commands.arguments.CompoundTagArgument")
+const $CompoundTag = Java.loadClass("net.minecraft.nbt.CompoundTag")
+const $SummonCommand = Java.loadClass("net.minecraft.server.commands.SummonCommand")
 
 
 
@@ -30,7 +25,7 @@ ServerEvents.commandRegistry(event => {
     // Helper function
     /**
      * 
-     * @param {$ServerPlayer} player 
+     * @param {$ServerPlayer_} player
      * @returns 
      */
     let fly = (player) => {
@@ -56,7 +51,7 @@ ServerEvents.commandRegistry(event => {
     // Function to print global variable
     /**
      * 
-     * @param {$ServerPlayer} player 
+     * @param {$ServerPlayer_} player
      * @param {string} variableName 
      * @returns 
      */
@@ -70,8 +65,8 @@ ServerEvents.commandRegistry(event => {
             player.tell(`Value of ${str}: ${strfolet(str)}`);
             return 1;
         }
-        else if (str.split('.').length.toFixed() == 0) {
-            let O_o = global[str] == undefined ? "没有此全局变量" : global[str]
+        else if (Number(str.split('.').length.toFixed()) === 0) {
+            let O_o = global[str] === undefined ? "没有此全局变量" : global[str]
             // console.log(str);
             // console.log(O_o);
             player.tell(`Value of ${str}: ${O_o}`);
@@ -110,12 +105,13 @@ ServerEvents.commandRegistry(event => {
 
 
     /**
-     * 
-     * @param {$CommandSourceStack} stack 
-     * @param {*} entityType 
-     * @param {*} vec3 
-     * @param {*} nbt 
-     * @param {*} bool 
+     *
+     * @param { number } num
+     * @param {$CommandSourceStack_} stack
+     * @param {*} entityType
+     * @param {*} vec3
+     * @param {*} nbt
+     * @param {*} bool
      */
     let spawnEntity = (num, stack, entityType, vec3, nbt, bool) => {
         // console.log(num, stack, entityType, vec3, nbt, bool)
@@ -142,9 +138,9 @@ ServerEvents.commandRegistry(event => {
     //kjs reload server_scripts
     /**
      * 
-     * @param {$MinecraftServer} server 
-     * @param {$Level} level
-     * @param {$BlockPos$MutableBlockPos} pos 
+     * @param {$MinecraftServer_} server
+     * @param {$ServerLevel_} level
+     * @param {$BlockPos$MutableBlockPos_} pos
      * @returns 
      */
     let printBlock = (server, level, pos) => {
@@ -182,6 +178,3 @@ function strfolet(str) {
     }
     return value; // 返回最终的值
 }
-
-
-

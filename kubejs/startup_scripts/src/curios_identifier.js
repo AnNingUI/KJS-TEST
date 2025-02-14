@@ -6,8 +6,8 @@
 
 /**
  * 
- * @param {import("packages/net/minecraft/world/item/crafting/$Ingredient").$Ingredient$Type} tag 
- * @param {import("packages/net/minecraft/world/item/$ItemStack").$ItemStack$Type} item 
+ * @param {Internal.Ingredient} tag 
+ * @param {Internal.ItemStack} item 
  * @returns 
  */
 function hasTag(tag, item) {

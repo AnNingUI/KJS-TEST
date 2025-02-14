@@ -1,10 +1,10 @@
-const SickleItem = require('packages/com/morecategory/MoreCategory/items/$SickleItem').$SickleItem
-const ItemProp = require('packages/net/minecraft/world/item/$Item$Properties').$Item$Properties
-const Client$ItemProp = require('packages/net/minecraft/client/renderer/item/$ItemProperties').$ItemProperties
-const BowItem = require('packages/net/minecraft/world/item/$BowItem').$BowItem
-const CuriosBoneMealItem = require('packages/com/morecategory/MoreCategory/items/$CuriosBoneMealItem').$CuriosBoneMealItem
-const $BlockItem = require('packages/net/minecraft/world/item/$BlockItem').$BlockItem
-const RegistryInfo = require('packages/dev/latvian/mods/kubejs/registry/$RegistryInfo').$RegistryInfo
+const SickleItem = Java.loadClass('com.morecategory.MoreCategory.items.SickleItem')
+const ItemProp = Java.loadClass('net.minecraft.world.item.Item$Properties')
+const Client$ItemProp = Java.loadClass('net.minecraft.client.renderer.item.ItemProperties')
+const BowItem = Java.loadClass('net.minecraft.world.item.BowItem')
+const CuriosBoneMealItem = Java.loadClass('com.morecategory.MoreCategory.items.CuriosBoneMealItem')
+const $BlockItem = Java.loadClass('net.minecraft.world.item.BlockItem')
+const RegistryInfo = Java.loadClass('dev.latvian.mods.kubejs.registry.RegistryInfo')
 
 
 StartupEvents.registry("item", event => {
@@ -60,28 +60,28 @@ StartupEvents.registry("item", (e) => {
             if (!Client || !Client.options || !Client.options.getCameraType() || !Client.player) {
                 return a.setAndContinue(__def__);
             }
-            const playCam = Client.options.getCameraType().isFirstPerson();
-            const play = Client.player;
-            const magicBookItem = Item.of("kubejs:magic_book");
+            // const playCam = Client.options.getCameraType().isFirstPerson();
+            // const play = Client.player;
+            // const magicBookItem = Item.of("kubejs:magic_book");
 
-            const setAnimationState = (offHand, mainHand) => {
-                const itemIndex = play.getInventory().find(magicBookItem) ?? -1;
-                // console.log(itemIndex);
-                if (itemIndex >= 0) {
-                    if (play.getOffHandItem().id === magicBookItem.id) {
-                        return offHand; // 确保返回 PlayState 对象
-                    } else if (play.getMainHandItem().id === magicBookItem.id) {
-                        return mainHand; // 确保返回 PlayState 对象
-                    } else {
-                        return __def__; // 确保返回 PlayState 对象
-                    }
-                }
-                else {
-                    return __def__; // 确保返回 PlayState 对象
-                }
-            };
-            const u = playCam ? setAnimationState(__p1l__, __p1__) : setAnimationState(__p3l__, __p3__)
-            return a.setAndContinue(u);
+            // const setAnimationState = (offHand, mainHand) => {
+            //     const itemIndex = play.getInventory().find(magicBookItem) ?? -1;
+            //     // console.log(itemIndex);
+            //     if (itemIndex >= 0) {
+            //         if (play.getOffHandItem().id === magicBookItem.id) {
+            //             return offHand; // 确保返回 PlayState 对象
+            //         } else if (play.getMainHandItem().id === magicBookItem.id) {
+            //             return mainHand; // 确保返回 PlayState 对象
+            //         } else {
+            //             return __def__; // 确保返回 PlayState 对象
+            //         }
+            //     }
+            //     else {
+            //         return __def__; // 确保返回 PlayState 对象
+            //     }
+            // };
+            // const u = playCam ? setAnimationState(__p1l__, __p1__) : setAnimationState(__p3l__, __p3__)
+            return a.setAndContinue(__ro__);
         })
         .geoModel(geo => {
             geo.setSimpleModel("kubejs:geo/item/magic_book.geo.json")

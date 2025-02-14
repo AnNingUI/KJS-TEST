@@ -1,6 +1,3 @@
-const { $BlockPos } = require("packages/net/minecraft/core/$BlockPos")
-
-
 
 /**
 let apapEnergy = 0
@@ -118,12 +115,12 @@ _runFunLootJS()
  * @returns 
  */
 const blockVec3pos = (vec3) => {
-    return new $BlockPos(vec3.get("x") - 0.5, vec3.get("y") - 0.5, vec3.get("z") - 0.5)
+    return new BlockPos(vec3.get("x") - 0.5, vec3.get("y") - 0.5, vec3.get("z") - 0.5)
 }
 
 /**
  * 
- * @param {import("packages/net/minecraft/core/$BlockPos").$BlockPos$Type} pos 
+ * @param {$BlockPos_} pos 
  * @returns 
  */
 const pos2str = (pos) => {
@@ -133,7 +130,7 @@ const pos2str = (pos) => {
 
 /**
  * 封装获取方块数据的通用函数
- * @param {import("packages/dev/latvian/mods/kubejs/block/$BlockBrokenEventJS").$BlockBrokenEventJS$Type} event 
+ * @param {$BlockBrokenEventJS_} event 
  * @param {string} blockId 
  * @param {string[]} dataPath 
  * @returns 

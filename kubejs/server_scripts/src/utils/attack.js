@@ -1,21 +1,18 @@
-import { $DamageTypes } from 'packages/net/minecraft/world/damagesource/$DamageTypes'
-
-const $Mob = /** @type {import('packages/net/minecraft/world/entity/$Mob').$Mob} */
+const $DamageTypes = /** @type {$DamageTypes_} */ Java.loadClass("net.minecraft.world.damagesource.DamageTypes")
+const $Mob = /** @type {$Mob_} */
 (Java.loadClass('net.minecraft.world.entity.Mob'))
-
-const { $Holder } = require('packages/net/minecraft/core/$Holder')
-const { $Entity } = require('packages/net/minecraft/world/entity/$Entity')
-const { $Player } = require('packages/net/minecraft/world/entity/player/$Player')
-const { $Level } = require('packages/net/minecraft/world/level/$Level')
-// const $DamageTypes = Java.loadClass('net.minecraft.world.damagesource.DamageTypes')
-
+const $Holder = Java.loadClass('net.minecraft.core.Holder')
+const $Entity = Java.loadClass('net.minecraft.world.entity.Entity')
+const $Level = Java.loadClass('net.minecraft.world.level.Level')
 /**
- * @param {$Level} level
+ * @param {$Level_} level
  */
-let $DamageSource = require('packages/net/minecraft/world/damagesource/$DamageSource').$DamageSource
-let $ResourceKey = require('packages/net/minecraft/resources/$ResourceKey').$ResourceKey
+let $DamageSource = Java.loadClass('net.minecraft.world.damagesource.DamageSource')
+let $ResourceKey = Java.loadClass('net.minecraft.resources.ResourceKey')
 let DAMAGE_TYPE = $ResourceKey.createRegistryKey('damage_type')
-export function getOrSource(/**@type {$Level} */level, /**@type {Special.DamageType} */damageType) {
+
+
+const getOrSource = (/**@type {$Level} */level, /**@type {Special.DamageType} */damageType) => {
 	let ace = $ResourceKey.create(DAMAGE_TYPE, Utils.id(damageType))
 	let holder = /**@type {$Holder} */(level
 		.registryAccess()
@@ -29,44 +26,45 @@ export function getOrSource(/**@type {$Level} */level, /**@type {Special.DamageT
 
 /**
  * 
- * @param {import('packages/net/minecraft/world/damagesource/$DamageTypes').$DamageTypes$Type} damageType 
- * @param {$Player} play 
+ * @param {$DamageTypes_} damageType
+ * @param {$Player_} play
  */
-export function getOrSourceByType(damageType, play) {
+const getOrSourceByType = (damageType, play) => {
 	return play.damageSources().source(damageType, play)
 }
 
-export let TB_TYPE = ['twilightforest:hydra', 'minecraft:ender_dragon']
+let TB_TYPE = ['twilightforest:hydra', 'minecraft:ender_dragon']
 /**
  * 
- * @param {$Player} player 
- * @param {$Entity} entity 
+ * @param {$Player_} player
+ * @param {$Entity_} entity
  * @returns 
  */
-export function playAttack(player, entity) { return entity.damageSources().playerAttack(player) }
+const playAttack = (player, entity) => entity.damageSources().playerAttack(player)
 
 // function playAttackByType(player, entity, type) {
 // 	(new $DamageSource(type)).typeHolder
 // }
 /**
  * 
- * @param {import('packages/dev/latvian/mods/kubejs/player/$PlayerEventJS').$PlayerEventJS$Type} event 
- * @param {import('packages/net/minecraft/server/level/$ServerLevel').$ServerLevel$Type} level 
+ * @param {$PlayerEventJS_} event
+ * @param {$ServerLevel_} level
  * @param {number} x 
  * @param {number} y 
  * @param {number} z 
  * @param {number} n 
  * @param {number} damage 
- * @param { ((entity: import('packages/net/minecraft/world/entity/$LivingEntity').$LivingEntity$Type) => void) } addCallBack 
- * @param { ((entity: import('packages/net/minecraft/world/entity/$LivingEntity').$LivingEntity$Type) => boolean) } canDamageCallBack 
+ * @param { ((entity: $LivingEntity_) => void) } addCallBack
+ * @param { ((entity: $LivingEntity_) => boolean) } canDamageCallBack
+ * @return
  */
-export function attackNearby(event, level, x, y, z, n, damage, addCallBack, canDamageCallBack) {
+const attackNearby = (event, level, x, y, z, n, damage, addCallBack, canDamageCallBack) => {
 	/**
 	 * @param {String[]} list
 	 */
 	let can_damage_callBack = canDamageCallBack ?? ((e) => true)
 	let aabb = AABB.CUBE.move(x - .5, y + .5, z - .5).expandTowards(-n, -n, -n).expandTowards(n, n, n)
-	let list = /** @type {import('packages/net/minecraft/world/entity/$LivingEntity').$LivingEntity$Type[]} */(level.getEntities(null, aabb))
+	let list = /** @type {import('packages/net/minecraft/world/entity.LivingEntity').$LivingEntity$Type[]} */(level.getEntities(null, aabb))
 	let player = event.player
 	let NoPlayList = list.filter(e => e !== player);
 	let callBack = addCallBack || ((e) => { })
@@ -77,7 +75,6 @@ export function attackNearby(event, level, x, y, z, n, damage, addCallBack, canD
 
 			entity3.setPosition(e.x, e.y, e.z);
 			entity3.spawn();
-			bool = false;
 		}
 		if (!e.isLiving()) {
 			return
@@ -95,14 +92,13 @@ export function attackNearby(event, level, x, y, z, n, damage, addCallBack, canD
 			ActualHeal(event.player, 0.001, e)
 			particle_fun(event, event.player, e)
 		}
-		if (e.type == TB_TYPE[1] && bool === true) {
+		if (e.type === TB_TYPE[1]) {
 			if (can_damage_callBack(e)) {
 				e.attack(playAttack(player, e), damage)
 				setTargetByPlayer(e, player)
 			}
-			bool = false;
 		} else {
-			if (e.type == TB_TYPE[0]) {
+			if (e.type === TB_TYPE[0]) {
 				callBack(e)
 				if (can_damage_callBack(e)) {
 					e.attack(getOrSourceByType($DamageTypes.GENERIC_KILL, player), damage)
@@ -127,8 +123,8 @@ export function attackNearby(event, level, x, y, z, n, damage, addCallBack, canD
 // })
 /**
  * 
- * @param {import('packages/net/minecraft/world/entity/$LivingEntity').$LivingEntity$Type} entity 
- * @returns {entity is import('packages/net/minecraft/world/entity/$Mob').$Mob$Type}
+ * @param {$LivingEntity_} entity
+ * @returns {entity is $Mob_}
  */
 const isMobEntity = (entity) => {
 	return entity instanceof $Mob
@@ -136,8 +132,8 @@ const isMobEntity = (entity) => {
 
 /**
  * 
- * @param {import('packages/net/minecraft/world/entity/$LivingEntity').$LivingEntity$Type} entity 
- * @param {import('packages/net/minecraft/world/entity/player/$Player').$Player$Type} player 
+ * @param {$LivingEntity_} entity
+ * @param {$Player_} player
  */
 const setTargetByPlayer = (entity, player) => {
 	if (isMobEntity(entity)) {

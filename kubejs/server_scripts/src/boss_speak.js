@@ -1,12 +1,10 @@
-const { $BlockRightClickedEventJS } = require("packages/dev/latvian/mods/kubejs/block/$BlockRightClickedEventJS");
 /**
  * 
- * @param {$BlockRightClickedEventJS} event 
+ * @param {$BlockRightClickedEventJS_} event
  * @param {*} entity 
  * @param {*} block 
  * @param {*} particle 
  */
-
 function boss(event, entity, block, particle) {
 	const offsetBlocks = [
 		event.block.offset(3, 0, 0),
@@ -21,8 +19,8 @@ function boss(event, entity, block, particle) {
 	const newX = event.block.x
 	const newY = event.block.y
 	const newZ = event.block.z
-	if (offsetBlocks.every(BK => BK.id == block) && event.block.id === `kubejs:${entity}spawn`) {
-		if (event.block.offset(0, 1, 0).id == `twilightforest:${entity}_trophy`) {
+	if (offsetBlocks.every(BK => BK.id === block) && event.block.id === `kubejs:${entity}spawn`) {
+		if (event.block.offset(0, 1, 0).id === `twilightforest:${entity}_trophy`) {
 			event.player.swing('MAIN_HAND', true);
 			event.block.offset(0, 1, 0).set(`minecraft:air`)
 			offsetBlocks.forEach(block => {
@@ -64,7 +62,6 @@ BlockEvents.rightClicked(event => {
 
 
 
-// const $PatchouliAPI = require('packages/vazkii/patchouli/api/$PatchouliAPI').$PatchouliAPI;
 // BlockEvents.rightClicked(event => {
 // 	if(event.item !== 'twilightforest:magic_map_focus') {return}
 //     // $PatchouliAPI.get().showMultiblock($PatchouliAPI.get().getMultiblock("kubejs:clay_altar"), null, event.block.pos.offset(0,2,0),"none")

@@ -1,6 +1,3 @@
-const { $ItemStack } = require("packages/net/minecraft/world/item/$ItemStack");
-const { $IFluidHandler } = require("packages/net/minecraftforge/fluids/capability/$IFluidHandler");
-
 let recipes = [{
     "input": [
         Item.of("minecraft:diamond_sword"),
@@ -82,7 +79,7 @@ BlockEvents.rightClicked((event) => {
             }
             let ftBlock = event.block.offset(ftPos[0], ftPos[1], ftPos[2])
             let ftBlockBe = ftBlock.getEntity()
-            let ftBlockCap = /**@type { $IFluidHandler }*/ (ftBlockBe.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null))
+            let ftBlockCap = /**@type { $IFluidHandler_ }*/ (ftBlockBe.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null))
             let ftFluid = ftBlockCap.getFluidInTank(0).fluid.arch$registryName()
             let ftAmount = ftBlockCap.getFluidInTank(0).amount
             if (ftFluid !== 'cai:mana') {
@@ -132,9 +129,9 @@ const isSubset = (arr1, arr2) => {
  * 注意recipe的input里面可以有相同元素如[Item.of("minecraft:iron_sword"),Item.of("minecraft:iron_sword")],则表示为有两个铁剑
  *
  * 根据可用的物品选择最合适的配方。
- * @param {$ItemStack[]} ItemList - 可用物品的列表。
- * @param {{ input: $ItemStack[], Amount: number, output: $ItemStack[] }[]} recipes - 配方列表。
- * @returns {{ input: $ItemStack[], Amount: number, output: $ItemStack[] } | null} - 选择的配方或如果没有合适的配方则返回 null。
+ * @param {$ItemStack_[]} ItemList - 可用物品的列表。
+ * @param {{ input: $ItemStack_[], Amount: number, output: $ItemStack_[] }[]} recipes - 配方列表。
+ * @returns {{ input: $ItemStack_[], Amount: number, output: $ItemStack_[] } | null} - 选择的配方或如果没有合适的配方则返回 null。
  */
 const selectRecipe = (ItemList, recipes) => {
     // 将 ItemList 转换为物品计数映射

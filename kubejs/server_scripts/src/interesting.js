@@ -1,6 +1,6 @@
-const $PatchouliAPI = require('packages/vazkii/patchouli/api/$PatchouliAPI').$PatchouliAPI;
-const AttributeModifier = require('packages/net/minecraft/world/entity/ai/attributes/$AttributeModifier').$AttributeModifier
-const AttributeModifieroperation = require('packages/net/minecraft/world/entity/ai/attributes/$AttributeModifier$Operation').$AttributeModifier$Operation
+const $PatchouliAPI = Java.loadClass('vazkii.patchouli.api.PatchouliAPI')
+const AttributeModifier = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
+const AttributeModifieroperation = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation')
 
 
 //统计数组重复元素及重复元素个数

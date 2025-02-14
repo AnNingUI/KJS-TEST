@@ -1,17 +1,11 @@
 //priority: 9999
 
-const $LodestoneParticleRegistry = require('packages/team/lodestar/lodestone/registry/common/particle/$LodestoneParticleRegistry').$LodestoneParticleRegistry
-
-// const $LodestoneParticleType = require('packages/team/lodestar/lodestone/systems/particle/type/$LodestoneParticleType').$LodestoneParticleType
-// const { $LodestoneWorldParticleType } = require('packages/team/lodestar/lodestone/systems/particle/world/type/$LodestoneWorldParticleType');
+const $LodestoneParticleRegistry = Java.loadClass('team.lodestar.lodestone.registry.common.particle.LodestoneParticleRegistry');
 const $LodestoneWorldParticleType = Java.loadClass('team.lodestar.lodestone.systems.particle.world.type.LodestoneWorldParticleType');
 const $LodestoneParticleType = $LodestoneWorldParticleType
 
-const $RegisterParticleProvidersEvent = require('packages/net/minecraftforge/client/event/$RegisterParticleProvidersEvent').$RegisterParticleProvidersEvent
 
-
-const { registerParticleFactory, registerParticleFactory$Screen } = require('./particlere')
-
+let $RegisterParticleProvidersEvent = Java.loadClass('net.minecraftforge.client.event.RegisterParticleProvidersEvent')
 
 
 let LAVA_PARTICLE = $LodestoneParticleRegistry.PARTICLES.register("lava", () => new $LodestoneParticleType())

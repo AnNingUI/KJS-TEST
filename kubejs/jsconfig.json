@@ -2,8 +2,7 @@
     "compilerOptions": {
         "lib": [
             "ES5",
-            "ES2015",
-            "ES6"
+            "ES2015"
         ],
         "rootDirs": [
             "probe/generated",
@@ -12,10 +11,6 @@
             "startup_scripts",
             "client_scripts"
         ],
-        "target": "ES2015",
-        "typeRoots": [
-            "./type"
-        ],
-        "baseUrl": "./type",
+        "target": "ES2015"
     }
 }

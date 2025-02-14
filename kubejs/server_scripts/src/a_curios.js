@@ -6,5 +6,5 @@ PlayerEvents.tick(e => {
     let SoulTalismanAddHealth = SoulTalismanHealth * SoulTalismanCount
     let currentMaxHealth = 20 + SoulTalismanAddHealth;
     player.setMaxHealth(currentMaxHealth);
-    player.setHealth(Math.min(player.health, currentMaxHealth));
+    player.setHealth(JavaMath.min(player.health, currentMaxHealth));
 });
