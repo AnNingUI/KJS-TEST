@@ -13,7 +13,35 @@ const $Font$DisplayMode
 	= Java.loadClass("net.minecraft.client.gui.Font$DisplayMode");
 const $ClientTooltipComponent
 	= Java.loadClass("net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent");
+const $$Color
+	= Java.loadClass("java.awt.Color");
+const $Button
+	= Java.loadClass("net.minecraft.client.gui.components.Button")
+const $REIScreen
+	= Java.loadClass("me.shedaniel.rei.impl.client.gui.screen.DefaultDisplayViewingScreen")
 
+const upButton = $Button.builder(
+	Text.literal("▲"),
+	() => {
+		if (global.mLayer < 4 && global.mLayer >= 0) {
+			global.mLayer++;
+		} else {
+			global.mLayer = 0;
+		}
+	}
+).bounds(120, 74, 18, 18)
+.build();
+const downButton = $Button.builder(
+	Text.literal("▼"),
+	() => {
+		if (global.mLayer > 0 && global.mLayer < 5) {
+			global.mLayer--;
+		} else {
+			global.mLayer = 4;
+		}
+	}
+).bounds(120, 92, 18, 18)
+.build();
 
 const setLevelMethod = $Entity.__javaObject__.getDeclaredMethod("m_284535_", $Level);
 setLevelMethod.setAccessible(true);
@@ -212,8 +240,9 @@ global.draw = (r, graphics, mutblocks, canRotation, renderScale, offset, angle) 
 	let scale = renderScale;
 	matrixStack.scale(scale, scale, scale)
 	matrixStack.translate(offset.x + 10, offset.y + 2, offset.z + 5);
-	let mub = /**@type {{get: Internal.Block_, pos: BlockPos_}[]} */(mutblocks)
+	let mub = /**@type {{get: Internal.Block_, pos: BlockPos_, mLayer: number}[]} */(mutblocks)
 	mub.forEach(block => {
+		if (block?.mLayer > global.mLayer) return;
 		canRotation ? matrixStack.pushPose() : {};
 		let { x, y, z } = block.pos
 		// 自转
@@ -254,12 +283,38 @@ global.drawObsidian = (r, graphics) => {
 	], false, 4, { x: 7, y: 16, z: 7 })
 }
 
+global.mLayer = 4
+global.isRenderButton = true
 /**
  * 
  * @param {Internal.CustomJSRecipe} r 
  * @param {GuiGraphics} graphics 
  */
 global.drawMagic = (r, graphics) => {
+	// console.log(global.mLayer)
+	let gH = graphics.guiHeight();
+	let gW = graphics.guiWidth();
+	let sW = Client.window.width;
+	let sH = Client.window.height;
+	let scH = gH / sH;
+	let scW = gW / sW;
+	// console.log(`${scW} - ${scH}`)
+	let sX = (sW - gW) / 2
+	let sY = (sH - gH) / 2
+	let dX = scW < 0.26 ? sX - 128 : 112
+	let dY = scH < 0.26 ? sY - 120 : 0
+	// console.log(`${sX} - ${sY - dY} - ${sW} - ${sH}`)
+	if (global.isRenderButton && Client.screen instanceof $REIScreen) {
+		upButton.setX(sX - dX)
+		upButton.setY(sY - dY)
+		downButton.setX(sX - dX)
+		downButton.setY(sY - dY + 18)
+		Client.screen.addRenderableWidget(upButton);
+		Client.screen.addRenderableWidget(downButton);
+		global.isRenderButton = false;
+	}
+	
+
 	let re = /**@type {MagicRecipes} */(r.data.recipes);
 	let type = re.rType;
 	let id = re.id;
@@ -273,7 +328,7 @@ global.drawMagic = (r, graphics) => {
 				let j = Element[1];
 				let type = Element[4];
 
-				type == "fluid" ? renderComponentTooltip(graphics, Client.font, [Component.of(str).blue()], i - 11, j + 20) : {};
+				type == "fluid" ? renderComponentTooltip(graphics, Client.font, [Component.of(str).blue()], i - 11, j + 20, 0) : {};
 				graphics.renderOutline(Element[0] - 1, Element[1] - 1, 18, 18, new KjsColor([115, 136, 137, 125]).getRGB());
 			}
 		}
@@ -289,111 +344,114 @@ global.drawMagic = (r, graphics) => {
 			graphics.renderOutline(minX, minY, maxX - minX, maxY - minY, rgba);
 		})
 	}
+
+
+	global.isRenderButton = true;
 	return global.draw(r, graphics, [
-		{ get: Block.getBlock("kubejs:myjq2"), pos: new BlockPos(0, 3, 0) },
+		{ get: Block.getBlock("kubejs:myjq2"), pos: new BlockPos(0, 3, 0), mLayer: 0 },
 
-		{ get: Block.getBlock(type == "fluid" ? "kubejs:jar" : "create:depot"), pos: new BlockPos(0, 4, 0) },
+		{ get: Block.getBlock(type == "fluid" ? "kubejs:jar" : "create:depot"), pos: new BlockPos(0, 4, 0), mLayer: 1 },
 
-		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(0, 4, 2) }, //
-		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(0, 4, -2) },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 4, -2) },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 5, -2) },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 4, 2) },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 5, 2) },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 4, -2) },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 5, -2) },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 4, 2) },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 5, 2) },
-		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(-2, 4, 0) }, //
-		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(2, 4, 0) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(0, 3, 2) }, //
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(0, 3, -2) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(1, 3, -2) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(1, 3, 2) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-1, 3, 2) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-1, 3, -2) },
+		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(0, 4, 2), mLayer: 1 }, //
+		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(0, 4, -2), mLayer: 1 },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 4, -2), mLayer: 1 },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 5, -2), mLayer: 2 },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 4, 2), mLayer: 1 },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 5, 2), mLayer: 2 },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 4, -2), mLayer: 1 },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 5, -2), mLayer: 2 },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 4, 2), mLayer: 1 },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 5, 2), mLayer: 2 },
+		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(-2, 4, 0), mLayer: 1 }, //
+		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(2, 4, 0), mLayer: 1 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(0, 3, 2), mLayer: 0 }, //
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(0, 3, -2), mLayer: 0 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(1, 3, -2), mLayer: 0 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(1, 3, 2), mLayer: 0 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-1, 3, 2), mLayer: 0 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-1, 3, -2), mLayer: 0 },
 
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, -2) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 2) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 2) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, -2) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, -2), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 2), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 2), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, -2), mLayer: 0 },
 
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, -3) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, 3) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, 3) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, -3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, -3), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, 3), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, 3), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, -3), mLayer: 0 },
 
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(0, 3, -3) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(0, 3, 3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(0, 3, -3), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(0, 3, 3), mLayer: 0 },
 
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 0) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 0) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 0), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 0), mLayer: 0 },
 
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, -1) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, -1) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 1) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 1) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, -1), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, -1), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 1), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 1), mLayer: 0 },
 
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-1, 3, -3) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(1, 3, -3) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-1, 3, 3) },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(1, 3, 3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-1, 3, -3), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(1, 3, -3), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-1, 3, 3), mLayer: 0 },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(1, 3, 3), mLayer: 0 },
 
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, -2) }, //1
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, 2) }, //2
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, 2) }, //3
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, -2) }, //4
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, -2), mLayer: 0 }, //1
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, 2), mLayer: 0 }, //2
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, 2), mLayer: 0 }, //3
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, -2), mLayer: 0 }, //4
 
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 4, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 4, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 4, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, -1) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, 0) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, 1) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 4, -3), mLayer: 1 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 4, -3), mLayer: 1 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 4, -3), mLayer: 1 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, -1), mLayer: 1 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, 0), mLayer: 1 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, 1), mLayer: 1 },
 
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 5, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 5, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 5, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, -1) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, 0) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, 1) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 5, -3), mLayer: 2 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 5, -3), mLayer: 2 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 5, -3), mLayer: 2 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, -1), mLayer: 2 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, 0), mLayer: 2 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, 1), mLayer: 2 },
 
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 6, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 6, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 6, -3) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, -1) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, 0) },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, 1) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 6, -3), mLayer: 3 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 6, -3), mLayer: 3 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 6, -3), mLayer: 3 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, -1), mLayer: 3 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, 0), mLayer: 3 },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, 1), mLayer: 3 },
 
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 4, -2) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 4, 2) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 5, -2) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 5, 2) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 6, -2) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 6, 2) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 4, -2), mLayer: 1 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 4, 2), mLayer: 1 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 5, -2), mLayer: 2 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 5, 2), mLayer: 2 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 6, -2), mLayer: 3 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 6, 2), mLayer: 3 },
 
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 4, -3) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 4, -3) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 5, -3) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 5, -3) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 6, -3) },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 6, -3) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 4, -3), mLayer: 1 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 4, -3), mLayer: 1 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 5, -3), mLayer: 2 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 5, -3), mLayer: 2 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 6, -3), mLayer: 3 },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 6, -3), mLayer: 3 },
 
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, 0) }, //
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, 1) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, -1) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, 0) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, 1) },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, -1) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, 0), mLayer: 0 }, //
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, 1), mLayer: 0 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, -1), mLayer: 0 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, 0), mLayer: 0 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, 1), mLayer: 0 },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, -1), mLayer: 0 },
 
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(0, 3, 1) },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(0, 3, -1) },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, 0) },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, 0) },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, -1) },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, 1) },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, 1) },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, -1) },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(0, 3, 1), mLayer: 0 },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(0, 3, -1), mLayer: 0 },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, 0), mLayer: 0 },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, 0), mLayer: 0 },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, -1), mLayer: 0 },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, 1), mLayer: 0 },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, 1), mLayer: 0 },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, -1), mLayer: 0 },
 	], true, 3.05, { x: 7, y: 21, z: 14 }, angle)
 }
 
@@ -601,4 +659,62 @@ let $Collectors = Java.loadClass("java.util.stream.Collectors");
  */
 function renderComponentTooltip(graphics, font, list, i, j) {
 	renderTooltipInternal(graphics, font, $Lists.transform(list, (r) => r.getVisualOrderText()).stream().map((e) => $ClientTooltipComponent.create(e)).collect($Collectors.toList()), i, j, $DefaultTooltipPositioner.INSTANCE);
+}
+
+
+
+/**
+ * Creates an instance of KjsColor.
+ * 
+ * @constructor
+ * @param {number[]} rgba - An array of RGBA values where each value is an integer between 0 and 255.
+ * @param {number} rgba[0] - The red component of the color.
+ * @param {number} rgba[1] - The green component of the color.
+ * @param {number} rgba[2] - The blue component of the color.
+ * @param {number} [rgba[3]=255] - The alpha (opacity) component of the color, defaults to 255 if not provided.
+ */
+function KjsColor(rgba) {
+	/**
+	 * The red component of the color.
+	 * @type {number}
+	 */
+	this.r = rgba[0];
+
+	/**
+	 * The green component of the color.
+	 * @type {number}
+	 */
+	this.g = rgba[1];
+
+	/**
+	 * The blue component of the color.
+	 * @type {number}
+	 */
+	this.b = rgba[2];
+
+	/**
+	 * The alpha (opacity) component of the color.
+	 * @type {number}
+	 */
+	this.a = rgba[3] || 255;
+
+	/**
+	 * An instance of the Color class representing the normalized color values.
+	 * @type {Internal.Color}
+	 */
+	this.color = new $$Color(this.r / 255, this.g / 255, this.b / 255, this.a / 255);
+}
+/**
+ * Example method for KjsColor (if needed).
+ * 
+ * @function
+ * @name someMethod
+ */
+// KjsColor.prototype.getRGB = function() {
+//     return this.color.getRGB();
+// };
+KjsColor.prototype = {
+	getRGB: function () {
+		return this.color.getRGB();
+	}
 }

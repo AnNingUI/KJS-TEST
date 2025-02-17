@@ -1,7 +1,5 @@
 const $RenderJSBlockEntityRenderer     
     = Java.loadClass("com.chen1335.renderjs.client.renderer.RenderJSBlockEntityRenderer")
-const $Axis                            
-    = Java.loadClass("com.mojang.math.Axis")
 const $RenderType                      
     = Java.loadClass("net.minecraft.client.renderer.RenderType")
 const $ItemDisplayContext              
@@ -101,7 +99,7 @@ function KjsColor(rgba) {
     
     /**
      * An instance of the Color class representing the normalized color values.
-     * @type {(Color)}
+     * @type {Internal.Color}
      */
     this.color = new Color(this.r / 255, this.g / 255, this.b / 255, this.a / 255);
 }

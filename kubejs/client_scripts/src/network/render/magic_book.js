@@ -1,5 +1,3 @@
-const $Axis = Java.loadClass("com.mojang.math.Axis");
-const $ItemStack = Java.loadClass("net.minecraft.world.item.ItemStack");
 const $Vec3 = Java.loadClass("net.minecraft.world.phys.Vec3");
 
 let Item1;

@@ -9,6 +9,7 @@ const $MekanismModules = Java.loadClass("mekanism.common.registries.MekanismModu
 const $ModuleDeferredRegister = Java.loadClass("mekanism.common.registration.impl.ModuleDeferredRegister")
 const $ItemMekaTool = Java.loadClass("mekanism.common.item.gear.ItemMekaTool")
 const $ItemMekaSuitArmor = Java.loadClass("mekanism.common.item.gear.ItemMekaSuitArmor")
+const $ServerPlayer = Java.loadClass("net.minecraft.server.level.ServerPlayer")
 
 // === 这里不要使用 ICustomModule 因为这是一个泛型接口， JavaAdapter对泛型接口支持不太行 ===
 // const $ICustomModule = Java.loadClass("mekanism.api.gear.ICustomModule")
@@ -32,12 +33,17 @@ MODULES.createAndRegister(modEventBus)
 const id$mceu = new ResourceLocation("kubejs","module_create_energy_unit")
 const module$mceu = MODULES.register("module_create_energy_unit", () => {
     return new JavaAdapter(
-        $ModuleColorModulationUnit, /** @type {Internal.ModuleColorModulationUnit} */({
+        $ModuleColorModulationUnit, {
             tickServer: function(modlue, player) {
-                const maxEnergy = getMaxEnergy(modlue.getContainer())
-                modlue.getEnergyContainer().setEnergy(maxEnergy)
+                if (modlue && player && player.server && player instanceof $ServerPlayer && modlue.getContainer()) {
+                    const maxEnergy = getMaxEnergy(modlue.getContainer())
+                    if (modlue.getEnergyContainer()) {
+                        const energy = modlue.getEnergyContainer().getEnergy() ?? 0;
+                        if (energy < maxEnergy) modlue.getEnergyContainer().setEnergy(maxEnergy);
+                    }
+                }
             }
-        })
+        }
     )
 }, () => $ForgeRegistries.ITEMS.getValue(id$mceu).asItem(), builder => builder.rarity($Rarity.EPIC))
 const hooks = new $MekanismHooks();
@@ -77,9 +83,6 @@ StartupEvents.registry("item", (event) => {
         return new JavaAdapter(
             $ItemModule, 
             {
-                getModuleData: function() {
-                    return module$mceu.getModuleData()
-                },
                 // m_5812_ 是 isFoil的方法名混淆
                 m_5812_: function() {
                     return true;

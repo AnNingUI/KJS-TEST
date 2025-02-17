@@ -1,8 +1,7 @@
 // startup_scripts
 
 
-const $Axis = Java.loadClass("com.mojang.math.Axis");
-
+const $Axis= Java.loadClass("com.mojang.math.Axis");
 const $RenderType = Java.loadClass("net.minecraft.client.renderer.RenderType");
 const $TextureAtlas = Java.loadClass("net.minecraft.client.renderer.texture.TextureAtlas");
 const $ItemDisplayContext = Java.loadClass("net.minecraft.world.item.ItemDisplayContext");
