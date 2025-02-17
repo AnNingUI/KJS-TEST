@@ -7,6 +7,7 @@
         "rootDirs": [
             "probe/generated",
             "probe/user",
+            "type",
             "server_scripts",
             "startup_scripts",
             "client_scripts"

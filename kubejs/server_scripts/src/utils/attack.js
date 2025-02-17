@@ -1,20 +1,19 @@
-const $DamageTypes = /** @type {$DamageTypes_} */ Java.loadClass("net.minecraft.world.damagesource.DamageTypes")
-const $Mob = /** @type {$Mob_} */
-(Java.loadClass('net.minecraft.world.entity.Mob'))
+const $DamageTypes = Java.loadClass("net.minecraft.world.damagesource.DamageTypes")
+const $Mob = Java.loadClass('net.minecraft.world.entity.Mob')
 const $Holder = Java.loadClass('net.minecraft.core.Holder')
 const $Entity = Java.loadClass('net.minecraft.world.entity.Entity')
 const $Level = Java.loadClass('net.minecraft.world.level.Level')
 /**
- * @param {$Level_} level
+ * @param {$Level} level
  */
 let $DamageSource = Java.loadClass('net.minecraft.world.damagesource.DamageSource')
 let $ResourceKey = Java.loadClass('net.minecraft.resources.ResourceKey')
 let DAMAGE_TYPE = $ResourceKey.createRegistryKey('damage_type')
 
 
-const getOrSource = (/**@type {$Level} */level, /**@type {Special.DamageType} */damageType) => {
+const getOrSource = (/**@type {Internal.Level} */level, /**@type {Special.DamageType} */damageType) => {
 	let ace = $ResourceKey.create(DAMAGE_TYPE, Utils.id(damageType))
-	let holder = /**@type {$Holder} */(level
+	let holder = /**@type {Internal.Holder} */(level
 		.registryAccess()
 		.registryOrThrow(DAMAGE_TYPE)
 		.getHolderOrThrow(ace))
@@ -26,8 +25,8 @@ const getOrSource = (/**@type {$Level} */level, /**@type {Special.DamageType} */
 
 /**
  * 
- * @param {$DamageTypes_} damageType
- * @param {$Player_} play
+ * @param {Internal.DamageTypes} damageType
+ * @param {Internal.Player} play
  */
 const getOrSourceByType = (damageType, play) => {
 	return play.damageSources().source(damageType, play)
@@ -36,7 +35,7 @@ const getOrSourceByType = (damageType, play) => {
 let TB_TYPE = ['twilightforest:hydra', 'minecraft:ender_dragon']
 /**
  * 
- * @param {$Player_} player
+ * @param {Internal.Player} player
  * @param {$Entity_} entity
  * @returns 
  */
@@ -47,15 +46,15 @@ const playAttack = (player, entity) => entity.damageSources().playerAttack(playe
 // }
 /**
  * 
- * @param {$PlayerEventJS_} event
- * @param {$ServerLevel_} level
+ * @param {Internal.PlayerEventJS} event
+ * @param {Internal.ServerLevel} level
  * @param {number} x 
  * @param {number} y 
  * @param {number} z 
  * @param {number} n 
  * @param {number} damage 
- * @param { ((entity: $LivingEntity_) => void) } addCallBack
- * @param { ((entity: $LivingEntity_) => boolean) } canDamageCallBack
+ * @param { ((entity: Internal.LivingEntity) => void) } addCallBack
+ * @param { ((entity: Internal.LivingEntity) => boolean) } canDamageCallBack
  * @return
  */
 const attackNearby = (event, level, x, y, z, n, damage, addCallBack, canDamageCallBack) => {
@@ -64,13 +63,13 @@ const attackNearby = (event, level, x, y, z, n, damage, addCallBack, canDamageCa
 	 */
 	let can_damage_callBack = canDamageCallBack ?? ((e) => true)
 	let aabb = AABB.CUBE.move(x - .5, y + .5, z - .5).expandTowards(-n, -n, -n).expandTowards(n, n, n)
-	let list = /** @type {import('packages/net/minecraft/world/entity.LivingEntity').$LivingEntity$Type[]} */(level.getEntities(null, aabb))
+	let list = /** @type {Internal.LivingEntity[]} */(level.getEntities(null, aabb))
 	let player = event.player
 	let NoPlayList = list.filter(e => e !== player);
 	let callBack = addCallBack || ((e) => { })
 	NoPlayList.forEach(e => {
 
-		if (/** @type {$Entity} */(e).type === 'minecraft:end_crystal' && bool === true) {
+		if (/** @type {Internal.Entity} */(e).type === 'minecraft:end_crystal' && bool === true) {
 			var entity3 = level.createEntity('minecraft:lightning_bolt');
 
 			entity3.setPosition(e.x, e.y, e.z);
@@ -123,8 +122,8 @@ const attackNearby = (event, level, x, y, z, n, damage, addCallBack, canDamageCa
 // })
 /**
  * 
- * @param {$LivingEntity_} entity
- * @returns {entity is $Mob_}
+ * @param {Internal.LivingEntity} entity
+ * @returns {entity is Internal.Mob}
  */
 const isMobEntity = (entity) => {
 	return entity instanceof $Mob
@@ -132,8 +131,8 @@ const isMobEntity = (entity) => {
 
 /**
  * 
- * @param {$LivingEntity_} entity
- * @param {$Player_} player
+ * @param {Internal.LivingEntity} entity
+ * @param {Internal.Player} player
  */
 const setTargetByPlayer = (entity, player) => {
 	if (isMobEntity(entity)) {

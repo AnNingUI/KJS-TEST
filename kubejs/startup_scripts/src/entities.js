@@ -105,7 +105,7 @@ function colorRandomNum () {
 
 /**
  * 
- * @param {$Entity_} E 
+ * @param {Internal.Entity_} E 
  */
 global.myjoTick = (E) => {
     let {x,y,z} = E

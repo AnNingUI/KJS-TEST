@@ -25,7 +25,7 @@ ServerEvents.commandRegistry(event => {
     // Helper function
     /**
      * 
-     * @param {$ServerPlayer_} player
+     * @param {Internal.ServerPlayer} player
      * @returns 
      */
     let fly = (player) => {
@@ -51,7 +51,7 @@ ServerEvents.commandRegistry(event => {
     // Function to print global variable
     /**
      * 
-     * @param {$ServerPlayer_} player
+     * @param {Internal.ServerPlayer} player
      * @param {string} variableName 
      * @returns 
      */
@@ -107,7 +107,7 @@ ServerEvents.commandRegistry(event => {
     /**
      *
      * @param { number } num
-     * @param {$CommandSourceStack_} stack
+     * @param {Internal.CommandSourceStack} stack
      * @param {*} entityType
      * @param {*} vec3
      * @param {*} nbt
@@ -138,9 +138,9 @@ ServerEvents.commandRegistry(event => {
     //kjs reload server_scripts
     /**
      * 
-     * @param {$MinecraftServer_} server
-     * @param {$ServerLevel_} level
-     * @param {$BlockPos$MutableBlockPos_} pos
+     * @param {Internal.MinecraftServer} server
+     * @param {Internal.ServerLevel} level
+     * @param {Internal.BlockPos$MutableBlockPos} pos
      * @returns 
      */
     let printBlock = (server, level, pos) => {

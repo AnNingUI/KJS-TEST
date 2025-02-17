@@ -9,7 +9,7 @@ let tg = 60
 let tb = 100
 /**
  * 
- * @param {$ItemTooltipEventJS_} tooltip 
+ * @param {Internal.ItemTooltipEventJS} tooltip 
  */
 global.itemTooltipEventKJS = (tooltip) => {
 	tooltip.addAdvanced('cai:gdcz_sword', (item, advanced, text) => {

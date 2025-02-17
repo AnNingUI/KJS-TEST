@@ -1,7 +1,7 @@
 
 /**
  *
- * @param {$Player_} player
+ * @param {Internal.Player} player
  * @param {string} id
  * @param data
  */

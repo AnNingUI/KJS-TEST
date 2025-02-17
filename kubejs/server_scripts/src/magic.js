@@ -34,7 +34,7 @@ ItemEvents.rightClicked('kubejs:magic_book', (e) => {
             x + r, y + Height, z + r
         );
         let list = level.getEntities(null, aabb);
-        let NoPlayList = /** @type {import("packages/net/minecraft/world/entity/$Entity").$Entity$Type[]} */(list).filter(e => e !== player && e.isLiving() && e.health > 0.1);
+        let NoPlayList = /** @type {Internal.Entity[]} */(list).filter(e => e !== player && e.isLiving() && e.health > 0.1);
 
         NoPlayList.length < 20 && (() => {
             t_particle.lifetime(2 + 10 * sa);

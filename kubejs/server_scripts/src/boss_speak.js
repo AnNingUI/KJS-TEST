@@ -1,6 +1,6 @@
 /**
  * 
- * @param {$BlockRightClickedEventJS_} event
+ * @param {Internal.BlockRightClickedEventJS} event
  * @param {*} entity 
  * @param {*} block 
  * @param {*} particle 

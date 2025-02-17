@@ -187,7 +187,7 @@ CreateEvents.spoutHandler((event) => {
         "kubejs:jar_input",
         "kubejs:jar",
         (block, fluid, simulate) => {
-            let be = /**@type {$BlockEntityJS_}*/(block.entity);
+            let be = /**@type {Internal.BlockEntityJS_}*/(block.entity);
             let dataCompound = block.entityData.getCompound("data");
             if (!dataCompound) return 0;
 
@@ -247,7 +247,7 @@ CreateEvents.spoutHandler((event) => {
                 if (fluid.id === rs.fluid.id && fluid.amount >= rs.amount) {
                     let aabb = AABB.of(block.x, block.y+1, block.z, block.x + 1, block.y + 2, block.z + 1);
                     let glow_item_frame = block.level.getEntitiesOfClass($GlowItemFrame,aabb,EntitySelector.ENTITY_STILL_ALIVE)
-                    let glow_item_item = /**@type {$GlowItemFrame} */ (glow_item_frame[0] ==undefined ? undefined : glow_item_frame[0].item);
+                    let glow_item_item = /**@type {Internal.GlowItemFrame} */ (glow_item_frame[0] ==undefined ? undefined : glow_item_frame[0].item);
                     let length = block.getEntityData().Items.length
                     let level = block.level
                     // global.prtList([glow_item_frame,glow_item_item])

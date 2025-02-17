@@ -2,51 +2,51 @@ const $FluidStackJS = Java.loadClass("dev.latvian.mods.kubejs.fluid.FluidStackJS
 const $ItemStack = Java.loadClass("net.minecraft.world.item.ItemStack");
 
 global.myjqRecipes = [
-	{
-		rType: "item",
-		input: {
-			item: [
-                Item.of("kubejs:pedestal",32),
+    {
+        rType: "item",
+        input: {
+            item: [
+                Item.of("kubejs:pedestal", 32),
                 Item.of('cai:r_glowstone', 32)
             ],
-			fluid: [
+            fluid: [
                 Fluid.of("cai:mana", 2000)
             ]
-		},
-		output: Item.of("apple", 1), // maxCount: 64
+        },
+        output: Item.of("apple", 1), // maxCount: 64
         tick: 20,
-		id: "kubejs:magic/test1"
-	},
-	{
-		rType: "fluid",
-		input: {
-			item: [
-                Item.of("kubejs:pedestal",32),
+        id: "kubejs:magic/test1"
+    },
+    {
+        rType: "fluid",
+        input: {
+            item: [
+                Item.of("kubejs:pedestal", 32),
                 Item.of("apple", 32)
             ],
-			fluid: [
+            fluid: [
                 Fluid.of("cai:mana", 2000)
             ]
-		},
-		output: Fluid.of("create:tea", 1000), // maxAmount: 8000
+        },
+        output: Fluid.of("create:tea", 1000), // maxAmount: 8000
         tick: 20,
-		id: "kubejs:magic/test2"
-	},
+        id: "kubejs:magic/test2"
+    },
     {
-		rType: "fluid",
-		input: {
-			item: [],
-			fluid: [
+        rType: "fluid",
+        input: {
+            item: [],
+            fluid: [
                 Fluid.of("cai:mana", 200),
                 Fluid.of("cai:mana", 200),
                 Fluid.of("cai:mana", 200),
                 Fluid.of("cai:mana", 200)
             ]
-		},
-		output: Fluid.of("createmetallurgy:molten_gold", 100), // maxAmount: 8000
+        },
+        output: Fluid.of("createmetallurgy:molten_gold", 100), // maxAmount: 8000
         tick: 80,
-		id: "kubejs:magic/test3"
-	}
+        id: "kubejs:magic/test3"
+    }
 ]
 
 
@@ -63,13 +63,13 @@ function CMyjqRecipe() {
 
     /**
      * The input items and fluids for the recipe.
-     * @type {{item: $ItemStack_[], fluid: $FluidStackJS_[]}}
+     * @type {{item: Internal.ItemStack[], fluid: $FluidStackJS_[]}}
      */
     this.input = { item: [], fluid: [] };
 
     /**
      * The output of the recipe, either an item or a fluid.
-     * @type {$ItemStack_|$FluidStackJS_|undefined}
+     * @type {Internal.ItemStack|$FluidStackJS_|undefined}
      */
     this.output = undefined;
 
@@ -88,20 +88,20 @@ function CMyjqRecipe() {
 
 /**
  * Sets the input items for the recipe.
- * @param {$ItemStack_[]} items - An array of item stacks to be used as inputs.
+ * @param {Internal.$ItemStack[]} items - An array of item stacks to be used as inputs.
  * @returns {CMyjqRecipe} The current recipe instance.
  */
-CMyjqRecipe.prototype.inputItems = function(items) {
+CMyjqRecipe.prototype.inputItems = function (items) {
     this.input.item = items;
     return this;
 };
 
 /**
  * Sets the input fluids for the recipe.
- * @param {$FluidStackJS_[]} fluids - An array of fluid stacks to be used as inputs.
+ * @param {Internal.FluidStackJS[]} fluids - An array of fluid stacks to be used as inputs.
  * @returns {CMyjqRecipe} The current recipe instance.
  */
-CMyjqRecipe.prototype.inputFluids = function(fluids) {
+CMyjqRecipe.prototype.inputFluids = function (fluids) {
     this.input.fluid = fluids;
     return this;
 };
@@ -109,11 +109,11 @@ CMyjqRecipe.prototype.inputFluids = function(fluids) {
 /**
  * Sets the output for the recipe.
  * The output can be either an item or a fluid stack.
- * @param {$ItemStack_|$FluidStackJS_} output - The output of the recipe.
+ * @param {Internal.ItemStack|Internal.FluidStackJS} output - The output of the recipe.
  * @returns {CMyjqRecipe} The current recipe instance.
  * @throws {Error} If the output is not a valid $ItemStack or $FluidStackJS.
  */
-CMyjqRecipe.prototype.setOutput = function(output) {
+CMyjqRecipe.prototype.setOutput = function (output) {
     if (output instanceof $ItemStack || output instanceof $FluidStackJS) {
         this.output = output;
         this.rType = output instanceof $ItemStack ? "item" : "fluid";
@@ -128,7 +128,7 @@ CMyjqRecipe.prototype.setOutput = function(output) {
  * @param {integer} tick - The time in ticks.
  * @returns {CMyjqRecipe} The current recipe instance.
  */
-CMyjqRecipe.prototype.setTick = function(tick) {
+CMyjqRecipe.prototype.setTick = function (tick) {
     this.tick = tick;
     return this;
 };
@@ -139,24 +139,24 @@ CMyjqRecipe.prototype.setTick = function(tick) {
  * @param {string} id - The unique identifier for the recipe.
  * @returns {void}
  */
-CMyjqRecipe.prototype.setId = function(id) {
+CMyjqRecipe.prototype.setId = function (id) {
     const ids = global.myjqRecipes.map(r => r.id);
     if (!ids.includes(id)) {
-		this.id = id;
-		if (this.output !== undefined) {
-			global.myjqRecipes.push({
-				rType: this.rType,
-				input: {
-					item: this.input.item,
-					fluid: this.input.fluid
-				},
-				output: this.output,
-				tick: this.tick,
-				id: this.id
-			});
-		}
-	};
-	return this;
+        this.id = id;
+        if (this.output !== undefined) {
+            global.myjqRecipes.push({
+                rType: this.rType,
+                input: {
+                    item: this.input.item,
+                    fluid: this.input.fluid
+                },
+                output: this.output,
+                tick: this.tick,
+                id: this.id
+            });
+        }
+    };
+    return this;
 };
 
 

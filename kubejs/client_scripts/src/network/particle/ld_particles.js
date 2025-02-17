@@ -14,7 +14,8 @@ const $Color
     = Java.loadClass("java.awt.Color")
 
 NetworkEvents.dataReceived("ld:particle",event=>{
-    const { level, /** @type {LDParticle} */data } = event
+    const { level } = event
+    let data = /** @type {LDParticle & Internal.CompoundTag} */ (event.data)
     let mapper = {
         "WISP": $LodestoneParticleRegistry.WISP_PARTICLE,
         "SMOKE": $LodestoneParticleRegistry.SMOKE_PARTICLE,

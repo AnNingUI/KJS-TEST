@@ -51,7 +51,7 @@ ClientEvents.init(event => {
             .create(ctx, new $BeaconRenderer(ctx))
             .setCustomRender((renderer, context) => {
                 let { blockEntity, poseStack: stack } = context;
-                let aLevel = /** @type { $BeaconBlockEntity_ } */ (blockEntity).levels;
+                let aLevel = /** @type { Internal.BeaconBlockEntity_ } */ (blockEntity).levels;
                 if (aLevel > 0) {
                     let circleCenter = new $Vec3(
                         blockEntity.getBlockPos().getX(), 

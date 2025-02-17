@@ -27,8 +27,8 @@ NetworkEvents.dataReceived("kubejs:magic_damage", (e) => {
 
 // /**
 //  * 
-//  * @param {$ItemStack} itemStack 
-//  * @param {$Vec3} worldPos 
+//  * @param {ItemStack} itemStack 
+//  * @param {Vec3d} worldPos 
 //  * @param {number} partialTicks 
 //  */
 // const renderItemAtWorldPosition = (
@@ -82,7 +82,7 @@ RenderJSEvents.AddWorldRender((e) => {
 /**
  * 在服务器中延迟执行函数
  * 
- * @param {import("net/minecraft/server.MinecraftServer").$MinecraftServer$Type} server - Minecraft 服务器对象
+ * @param {Internal.MinecraftServer} server - Minecraft 服务器对象
  * @param { ((sTick: number) => {}) } fun - 要执行的函数
  * @param {number} sTick - 当前的 tick 计数
  * @param {number} eTick - 结束的 tick 计数

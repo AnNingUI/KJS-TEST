@@ -478,18 +478,21 @@ BlockEvents.rightClicked(event => {
 
 
 
-// BlockEvents.rightClicked(event => {
-//     if (event.block.id === 'kubejs:stone_crafting_table') {
-//         event.player.openMenu(new SimpleMenuProvider((i, inv, p) => {
-//             return new CraftingMenu(i, inv, (fun) => {
-//                 fun.apply(event.level,event.block.pos)
-//                 return $Optional.empty()
-//             });
-//         }, Component.translatable("container.crafting")))
-//         event.cancel()
+BlockEvents.rightClicked(event => {
+    if (event.block.id === 'kubejs:stone_crafting_table') {
+        const $SimpleMenuProvider = Java.loadClass("net.minecraft.world.SimpleMenuProvider");
+        const $CraftingMenu = Java.loadClass("net.minecraft.world.inventory.CraftingMenu");
+        const $Optional = Java.loadClass("java.util.Optional");
+        event.player.openMenu(new $SimpleMenuProvider((i, inv, p) => {
+            return new $CraftingMenu(i, inv, (fun) => {
+                fun.apply(event.level,event.block.pos)
+                return $Optional.empty()
+            });
+        }, Component.translatable("container.crafting")))
+        event.cancel()
 
-//     }
-// })
+    }
+})
 
 
 

@@ -12,7 +12,7 @@ let pi = KMath.PI
 
 /**
  * 
- * @param {$Player_} player 
+ * @param {Internal.Player} player 
  */
 function hasSoulInSolts(player) {
 	return hasCuriosItem(player, "cai:soul_talisman");
@@ -22,9 +22,9 @@ function hasSoulInSolts(player) {
 let k = 0.28
 /**
  *
- * @param {$Player_} player
+ * @param {Internal.Player} player
  * @param {Number} n
- * @param {$LivingEntity_} entity
+ * @param {Internal.LivingEntity} entity
  */
 function ActualHeal(player, n, entity) { player.heal(entity.health * n) }
 
@@ -154,7 +154,7 @@ ItemEvents.rightClicked(e => {
 NativeEvents.onEvent($LivingHurtEvent, (event) => {
 	const actual = event.getSource().actual;
 	const player = actual instanceof $Player ? actual : null
-	/** @type {import("net/minecraft/world/item.ItemStack").$ItemStack} */ 
+	/** @type {Internal.ItemStack} */ 
 	const HeldItem = (player && player.getHandSlots()[0]) ?? Item.of("wooden_sword")
 	HeldItem !== undefined ? HeldItem : HeldItem = HeldItem
 	let { entity } = event
@@ -162,7 +162,7 @@ NativeEvents.onEvent($LivingHurtEvent, (event) => {
 	let { x, y, z } = entity
 	if (HeldItem !== undefined && HeldItem === "cai:gdcz_sword" && event.entity.type !== null) {
 		if (event.source.getType().toString() === "indirectMagic") return;
-		let Enchantments = /** @type {import("net/minecraft/world/item.ItemStack").$ItemStack} */(HeldItem).enchantments;
+		let Enchantments = /** @type {Internal.ItemStack} */(HeldItem).enchantments;
 		let FireAspect = false;
 		let FireAspectLvl = 0;
 		let Sweeping = false;
@@ -430,7 +430,7 @@ ItemEvents.rightClicked(event => {
 
 /**
  * 
- * @param {$ItemStack_} HeldItem 
+ * @param {Internal.ItemStack} HeldItem 
  * @returns 
  */
 function EnCh(HeldItem) {
@@ -492,7 +492,7 @@ NativeEvents.onEvent($LivingHurtEvent, event => {
 
 /**
  * 
- * @param {import("net/minecraft/world/entity.LivingEntity").$LivingEntity$Type} entity 
+ * @param {Internal.LivingEntity} entity 
  * @returns {number}
  */
 const getDamageReduction = (entity) => {

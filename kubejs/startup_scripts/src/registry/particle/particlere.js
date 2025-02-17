@@ -18,7 +18,7 @@ let $RegisterParticleProvidersEvent =
     Java.loadClass('net.minecraftforge.client.event.RegisterParticleProvidersEvent');
 /**
  * 
- * @param {$RegisterParticleProvidersEvent} event 
+ * @param {Internal.RegisterParticleProvidersEvent} event 
  * @param {String[]} List 
  */
 function registerParticleFactory$Screen(event,List){
@@ -29,8 +29,8 @@ function registerParticleFactory$Screen(event,List){
 }
 /**
  * 
- * @param {$RegisterParticleProvidersEvent} event 
- * @param {$RegistryObject<$LodestoneParticleType>[]} List
+ * @param {Internal.RegisterParticleProvidersEvent} event 
+ * @param {Internal.RegistryObject<Internal.LodestoneParticleType>[]} List
  */
 function registerParticleFactory(event,List){
     List.forEach(e => {

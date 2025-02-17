@@ -111,7 +111,7 @@ _runFunLootJS()
 
 /**
  * 
- * @param {import("packages/net/minecraft/world/phys/$Vec3").$Vec3$Type} vec3 
+ * @param {Vec3d_} vec3 
  * @returns 
  */
 const blockVec3pos = (vec3) => {
@@ -120,7 +120,7 @@ const blockVec3pos = (vec3) => {
 
 /**
  * 
- * @param {$BlockPos_} pos 
+ * @param {BlockPos} pos 
  * @returns 
  */
 const pos2str = (pos) => {
@@ -130,7 +130,7 @@ const pos2str = (pos) => {
 
 /**
  * 封装获取方块数据的通用函数
- * @param {$BlockBrokenEventJS_} event 
+ * @param {Internal.BlockBrokenEventJS} event 
  * @param {string} blockId 
  * @param {string[]} dataPath 
  * @returns 
@@ -155,9 +155,9 @@ function getBlockData(event, blockId, dataPath) {
 
 /**
  * 封装 LootJS 的逻辑
- * @param {import("packages/com/almostreliable/lootjs/kube/$LootModificationEventJS").$LootModificationEventJS$Type} event 
+ * @param {Internal.LootModificationEventJS} event 
  * @param {string} blockId 
- * @param {(block: $BlockContainerJS)=>{}} getCustomData 
+ * @param {(block: Internal.BlockContainerJS)=>{}} getCustomData 
  * @param {string} defaultLoot 
  */
 function createLootModifier(event, blockId, getCustomData, defaultLoot) {

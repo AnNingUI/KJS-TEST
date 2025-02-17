@@ -44,7 +44,7 @@ function addparticle(Particle, num1, num2, num3, num4, num5, num6, event, JsOrJa
  * @param {number} x2 
  * @param {number} y2 
  * @param {number} z2 
- * @param {import('packages/dev/latvian/mods/kubejs/entity/$EntityEventJS').$EntityEventJS$Type} event 
+ * @param {Internal.EntityEventJS} event 
  */
 function drawLine(x1, y1, z1, x2, y2, z2, event, d, random, time) {
 
@@ -100,7 +100,7 @@ function drawLine(x1, y1, z1, x2, y2, z2, event, d, random, time) {
  * @param {number} z2 
  * @param {number} time
  * @param {Particle} worldparticle 
- * @param {import('packages/net/minecraft/server/$MinecraftServer').$MinecraftServer$Type} server
+ * @param {Internal.MinecraftServer} server
  * @param { ((time: number) => {}) } lifeFun 
  * @param { ((time: number) => {}) } spawnFun
  */
@@ -151,8 +151,8 @@ global.raydrawLine_Ld = (x1, y1, z1, x2, y2, z2, time, worldparticle, server, li
  * @param {number} y2 
  * @param {number} z2 
  * @param {number} time
- * @param {$ParticleTypes_} particle
- * @param {$Level_} level
+ * @param {Internal.ParticleTypes$1} particle
+ * @param {Internal.Level} level
  */
 global.raydrawLine_Cs = (x1, y1, z1, x2, y2, z2, time, endtiem, particle, level) => {
 	let s = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
