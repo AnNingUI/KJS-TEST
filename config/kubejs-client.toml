@@ -1,5 +1,5 @@
 #Range: 100 ~ 4096
-height = 128
+height = 101
 #Range: 50 ~ 1000000
 segments = 240
 #Range: 1 ~ 10

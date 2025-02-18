@@ -23,25 +23,26 @@ const $REIScreen
 const upButton = $Button.builder(
 	Text.literal("▲"),
 	() => {
-		if (global.mLayer < 4 && global.mLayer >= 0) {
+		if (global.mLayer > 0 && global.mLayer <= 3) {
+			global.mLayer--;
+		} else {
+			global.mLayer = 3;
+		}
+	}
+).bounds(120, 74, 18, 18)
+	.build();
+const downButton = $Button.builder(
+	Text.literal("▼"),
+
+	() => {
+		if (global.mLayer < 3 && global.mLayer >= 0) {
 			global.mLayer++;
 		} else {
 			global.mLayer = 0;
 		}
 	}
-).bounds(120, 74, 18, 18)
-.build();
-const downButton = $Button.builder(
-	Text.literal("▼"),
-	() => {
-		if (global.mLayer > 0 && global.mLayer < 5) {
-			global.mLayer--;
-		} else {
-			global.mLayer = 4;
-		}
-	}
 ).bounds(120, 92, 18, 18)
-.build();
+	.build();
 
 const setLevelMethod = $Entity.__javaObject__.getDeclaredMethod("m_284535_", $Level);
 setLevelMethod.setAccessible(true);
@@ -221,7 +222,7 @@ https://github.com/Creators-of-Create/Create/blob/mc1.20.1/dev/src/main/java/com
  * 
  * @param {Internal.CustomJSRecipe} r 
  * @param {GuiGraphics} graphics 
- * @param {Internal.ArrayList<{get: Internal.Block, pos: BlockPos}>} mutblocks
+ * @param {Array<{get: Internal.Block, pos: BlockPos}> | {layer: number, maxLayer: number, blocks: Internal.ArrayList<{get: Internal.Block, pos: BlockPos}>} } mutblocks
  * @param {boolean} canRotation
  * @param {number} renderScale
  * @param {{x: number, y: number, z: number}} offset
@@ -240,9 +241,18 @@ global.draw = (r, graphics, mutblocks, canRotation, renderScale, offset, angle) 
 	let scale = renderScale;
 	matrixStack.scale(scale, scale, scale)
 	matrixStack.translate(offset.x + 10, offset.y + 2, offset.z + 5);
-	let mub = /**@type {{get: Internal.Block_, pos: BlockPos_, mLayer: number}[]} */(mutblocks)
-	mub.forEach(block => {
-		if (block?.mLayer > global.mLayer) return;
+	let mubIsArray = Array.isArray(mutblocks)
+	let mub = /**@type {{get: Internal.Block_, pos: BlockPos_}[]} */(
+		mubIsArray ? mutblocks : mutblocks.blocks
+	)
+	let layer = mutblocks?.layer
+	let maxLayer = mutblocks?.maxLayer
+	// console.log(layer)
+	mub.forEach((block, indx, muts) => {
+		let bY = block.pos.getY();
+		if (layer && maxLayer && bY > maxLayer - layer) {
+			return
+		}
 		canRotation ? matrixStack.pushPose() : {};
 		let { x, y, z } = block.pos
 		// 自转
@@ -283,8 +293,9 @@ global.drawObsidian = (r, graphics) => {
 	], false, 4, { x: 7, y: 16, z: 7 })
 }
 
-global.mLayer = 4
+global.mLayer = 3
 global.isRenderButton = true
+
 /**
  * 
  * @param {Internal.CustomJSRecipe} r 
@@ -304,16 +315,15 @@ global.drawMagic = (r, graphics) => {
 	let dX = scW < 0.26 ? sX - 128 : 112
 	let dY = scH < 0.26 ? sY - 120 : 0
 	// console.log(`${sX} - ${sY - dY} - ${sW} - ${sH}`)
-	if (global.isRenderButton && Client.screen instanceof $REIScreen) {
-		upButton.setX(sX - dX)
-		upButton.setY(sY - dY)
-		downButton.setX(sX - dX)
-		downButton.setY(sY - dY + 18)
+	let partialTick = Client.partialTick;
+	if (global.isRenderButton && Client.screen instanceof $REIScreen && partialTick > 0.5) {
+		upButton.setPosition(sX - dX, sY - dY)
+		downButton.setPosition(sX - dX, sY - dY + 18)
 		Client.screen.addRenderableWidget(upButton);
 		Client.screen.addRenderableWidget(downButton);
 		global.isRenderButton = false;
 	}
-	
+
 
 	let re = /**@type {MagicRecipes} */(r.data.recipes);
 	let type = re.rType;
@@ -345,114 +355,121 @@ global.drawMagic = (r, graphics) => {
 		})
 	}
 
+	let canRotation = false
+	let MAGIC_BLOCKS = [
+		{ get: Block.getBlock("kubejs:myjq2"), pos: new BlockPos(0, 3, 0) },
 
+		{ get: Block.getBlock(type == "fluid" ? "kubejs:jar" : "create:depot"), pos: new BlockPos(0, 4, 0) },
+
+		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(0, 4, 2) }, //
+		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(0, 4, -2) },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 4, -2) },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 5, -2) },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 4, 2) },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 5, 2) },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 4, -2) },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 5, -2) },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 4, 2) },
+		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 5, 2) },
+		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(-2, 4, 0) }, //
+		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(2, 4, 0) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(0, 3, 2) }, //
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(0, 3, -2) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(1, 3, -2) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(1, 3, 2) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-1, 3, 2) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-1, 3, -2) },
+
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, -2) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 2) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 2) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, -2) },
+
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, -3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, 3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, 3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, -3) },
+
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(0, 3, -3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(0, 3, 3) },
+
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 0) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 0) },
+
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, -1) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, -1) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 1) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 1) },
+
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-1, 3, -3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(1, 3, -3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-1, 3, 3) },
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(1, 3, 3) },
+
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, -2) }, //1
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, 2) }, //2
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, 2) }, //3
+		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, -2) }, //4
+
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 4, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 4, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 4, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, -1) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, 0) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, 1) },
+
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 5, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 5, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 5, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, -1) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, 0) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, 1) },
+
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 6, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 6, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 6, -3) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, -1) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, 0) },
+		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, 1) },
+
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 4, -2) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 4, 2) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 5, -2) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 5, 2) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 6, -2) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 6, 2) },
+
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 4, -3) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 4, -3) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 5, -3) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 5, -3) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 6, -3) },
+		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 6, -3) },
+
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, 0) }, //
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, 1) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, -1) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, 0) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, 1) },
+		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, -1) },
+
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(0, 3, 1) },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(0, 3, -1) },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, 0) },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, 0) },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, -1) },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, 1) },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, 1) },
+		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, -1) },
+	]
+	global.draw(r, graphics, {
+		blocks: MAGIC_BLOCKS,
+		layer: global.mLayer,
+		maxLayer: 6 // 这里填写MAGIC_BLOCKS里面posY的最大值，为了性能所以硬编码
+	}, canRotation, 3.05, canRotation ? { x: 7, y: 21, z: 14 } : { x: -16, y: 22, z: 15 }, angle)
+
+	Client.screen.removed()
 	global.isRenderButton = true;
-	return global.draw(r, graphics, [
-		{ get: Block.getBlock("kubejs:myjq2"), pos: new BlockPos(0, 3, 0), mLayer: 0 },
-
-		{ get: Block.getBlock(type == "fluid" ? "kubejs:jar" : "create:depot"), pos: new BlockPos(0, 4, 0), mLayer: 1 },
-
-		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(0, 4, 2), mLayer: 1 }, //
-		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(0, 4, -2), mLayer: 1 },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 4, -2), mLayer: 1 },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 5, -2), mLayer: 2 },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 4, 2), mLayer: 1 },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 5, 2), mLayer: 2 },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 4, -2), mLayer: 1 },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(2, 5, -2), mLayer: 2 },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 4, 2), mLayer: 1 },
-		{ get: Block.getBlock("create:depot"), pos: new BlockPos(-2, 5, 2), mLayer: 2 },
-		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(-2, 4, 0), mLayer: 1 }, //
-		{ get: Block.getBlock("kubejs:jar"), pos: new BlockPos(2, 4, 0), mLayer: 1 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(0, 3, 2), mLayer: 0 }, //
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(0, 3, -2), mLayer: 0 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(1, 3, -2), mLayer: 0 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(1, 3, 2), mLayer: 0 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-1, 3, 2), mLayer: 0 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-1, 3, -2), mLayer: 0 },
-
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, -2), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 2), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 2), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, -2), mLayer: 0 },
-
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, -3), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, 3), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, 3), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, -3), mLayer: 0 },
-
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(0, 3, -3), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(0, 3, 3), mLayer: 0 },
-
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 0), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 0), mLayer: 0 },
-
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, -1), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, -1), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-3, 3, 1), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(3, 3, 1), mLayer: 0 },
-
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-1, 3, -3), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(1, 3, -3), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-1, 3, 3), mLayer: 0 },
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(1, 3, 3), mLayer: 0 },
-
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, -2), mLayer: 0 }, //1
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, 2), mLayer: 0 }, //2
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(-2, 3, 2), mLayer: 0 }, //3
-		{ get: Block.getBlock("create:industrial_iron_block"), pos: new BlockPos(2, 3, -2), mLayer: 0 }, //4
-
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 4, -3), mLayer: 1 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 4, -3), mLayer: 1 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 4, -3), mLayer: 1 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, -1), mLayer: 1 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, 0), mLayer: 1 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 4, 1), mLayer: 1 },
-
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 5, -3), mLayer: 2 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 5, -3), mLayer: 2 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 5, -3), mLayer: 2 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, -1), mLayer: 2 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, 0), mLayer: 2 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 5, 1), mLayer: 2 },
-
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(-1, 6, -3), mLayer: 3 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(0, 6, -3), mLayer: 3 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(1, 6, -3), mLayer: 3 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, -1), mLayer: 3 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, 0), mLayer: 3 },
-		{ get: Block.getBlock("cai:r_glowstone"), pos: new BlockPos(3, 6, 1), mLayer: 3 },
-
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 4, -2), mLayer: 1 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 4, 2), mLayer: 1 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 5, -2), mLayer: 2 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 5, 2), mLayer: 2 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 6, -2), mLayer: 3 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(3, 6, 2), mLayer: 3 },
-
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 4, -3), mLayer: 1 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 4, -3), mLayer: 1 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 5, -3), mLayer: 2 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 5, -3), mLayer: 2 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(-2, 6, -3), mLayer: 3 },
-		{ get: Block.getBlock("minecraft:crying_obsidian"), pos: new BlockPos(2, 6, -3), mLayer: 3 },
-
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, 0), mLayer: 0 }, //
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, 1), mLayer: 0 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(-2, 3, -1), mLayer: 0 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, 0), mLayer: 0 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, 1), mLayer: 0 },
-		{ get: Block.getBlock("mekanism:boiler_casing"), pos: new BlockPos(2, 3, -1), mLayer: 0 },
-
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(0, 3, 1), mLayer: 0 },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(0, 3, -1), mLayer: 0 },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, 0), mLayer: 0 },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, 0), mLayer: 0 },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, -1), mLayer: 0 },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, 1), mLayer: 0 },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(1, 3, 1), mLayer: 0 },
-		{ get: Block.getBlock("create:framed_glass"), pos: new BlockPos(-1, 3, -1), mLayer: 0 },
-	], true, 3.05, { x: 7, y: 21, z: 14 }, angle)
 }
 
 
