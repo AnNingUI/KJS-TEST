@@ -109,6 +109,7 @@ function colorRandomNum () {
  */
 global.myjoTick = (E) => {
     let {x,y,z} = E
+    
     // console.log(x,y,z)
     /** @type {LDParticle} */
     let data = {
@@ -136,4 +137,18 @@ global.myjoTick = (E) => {
         "ld:particle",
         data
     )
+}
+
+
+
+
+/**
+ * 
+ * @param {Internal.Entity_} E 
+ */
+function getEntitySpeed(E) {
+    let vx = E.getDeltaMovement().x()
+    let vy = E.getDeltaMovement().y()
+    let vz = E.getDeltaMovement().z()
+    return Math.sqrt(vx * vx + vy * vy + vz * vz)
 }

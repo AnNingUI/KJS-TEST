@@ -45,7 +45,7 @@ StartupEvents.registry("block", event => {
 			.box(1, 12, 12, 4, 13, 15)
 			.box(12, 12, 12, 15, 13, 15)
 			.box(1, 13, 1, 15, 16, 15)
-			.model(`dimasic_server:block/${block}`).notSolid().fullBlock(false).displayName(block)
+			.model(`dimasic_server:block/${block}`).notSolid().fullBlock(false)
 	)
 	event.create('cai:r_glowstone').soundType('shroomlight').hardness(2.0).lightLevel(0.5)
 	event.create('cai:ar_glowstone').soundType('shroomlight').hardness(2.0).lightLevel(0.2)
@@ -314,96 +314,9 @@ StartupEvents.registry("block", event => {
 		})
 		.notSolid().fullBlock(false)
 
-	event.create("myjq2").notSolid().fullBlock(false).noItem()
+	// event.create("myjq2").notSolid().fullBlock(false).noItem()
 
-	event.create("jar")
-		.blockEntity((info) => {
-			info.initialData({
-				fluidTank: {
-					FluidName: undefined,
-					Amount: undefined,
-				},
-				give: 0
-			})
-			info.enableSync()
-			info.serverTick(0, 0, (be) => {
-				let { level, block } = be
-				let data = block.entityData.getCompound("data")
-				let fluidTank = data.getCompound("fluidTank")
-				fluidTank ? be.data.put("fluidTank", fluidTank) : {}
-				be.sync()
-				let id = fluidTank.getString("FluidName")
-				let amount = fluidTank.getInt("Amount")
-
-				if (id && amount !== undefined) {
-					if (amount > 8000) {
-						fluidTank.putInt("Amount", 8000)
-					} else if (amount <= 0) {
-						fluidTank.putInt("Amount", 0)
-						be.data.putInt("useAmount", 0)
-						be.sync()
-					}
-				}
-			})
-			info.attachCapability(
-				// 1.无法输入
-				// 2.管道线路中无可存储节点时仍然会虚空抽取
-				// 3.机械动力管道中会有所损耗
-				// 4.PIPZE管道中会把所有节点的方块都同时添加，导致复制问题
-
-				// 5.但是我不要输出功能了，以上问题皆以解决
-				CapabilityBuilder.FLUID.customBlockEntity()
-					.getCapacity((be) => 8000)
-					.getFluid((/**@type {Internal.BlockEntityJS}*/be,/**@type {Internal.FluidStackJS_}*/stack) => {
-						if (be instanceof $BlockEntityJS) {
-							// let stackName = stack?.fluid?.arch$registryName()?.toString() ?? "minecraft:water"
-							// let stackAmount = stack?.amount ?? 0
-							// console.log(stack)
-							let fluidTank = be.block.entityData.getCompound("data").getCompound("fluidTank")
-							let id = fluidTank.getString("FluidName")
-							let amount = fluidTank.getInt("Amount")
-							if (id && amount) {
-								return amount > 0 ? Fluid.of(id, amount) : Fluid.of("water", 0)
-							} else {
-								return Fluid.of("water", 0)
-							}
-						} else {
-							return Fluid.getEmpty()
-						}
-					})
-			)
-		})
-		.rightClick((event) => {
-			let { player, hand, level, block } = event;
-			let { pos, entityData } = block;
-			let itemStack = player.getItemInHand(hand);
-			let item = /**@type {Internal.BucketItem}*/(itemStack.getItem())
-			let itemFluid = item.getFluid();
-			if (itemFluid instanceof $ForgeFlowingFluid) {
-				let itemFluidName = itemFluid.arch$registryName().toString();
-				let fluidTank = entityData.getCompound("data").getCompound("fluidTank")
-				let id = fluidTank.getString("FluidName")
-				let amount = fluidTank.getInt("Amount")
-
-				if (amount > 0 && (itemFluidName == id) && amount < 7001) {
-					fluidTank.putInt("Amount", amount + 1000)
-					itemStack.setCount(itemStack.getCount() - 1);
-					player.give("bucket")
-				} else if (amount == 0 || amount == undefined || id == "") {
-					// console.log(itemFluidName)
-					entityData.getCompound("data").put("fluidTank", {
-						FluidName: itemFluidName,
-						Amount: 1000
-					})
-					itemStack.setCount(itemStack.getCount() - 1);
-					player.give("bucket")
-				}
-			}
-		})
-		.box(3, 0, 3, 13, 13, 13)
-		.box(6, 13, 6, 10, 14, 10)
-		.box(5, 14, 5, 11, 16, 11)
-		.defaultTranslucent().notSolid().fullBlock(false).soundType("glass")
+	
 
 })
 
@@ -1016,3 +929,134 @@ function itmeEquals(i1, i2) {
 function canInputFluid(fb1, f1, maxA) {
 	return fb1.FluidName == f1.id && fb1.Amount <= maxA - f1.amount || !fb1.FluidName || fb1.Amount == 0;
 }
+
+
+// 实体（包括掉落物）的附加渲染
+const $OverlayTexture = Java.loadClass("net.minecraft.client.renderer.texture.OverlayTexture");
+// const $EntityRenderersEvent$RegisterRenderers = Java.loadClass("net.minecraftforge.client.event.EntityRenderersEvent$RegisterRenderers")
+// const $EntityType = Java.loadClass("net.minecraft.world.entity.EntityType")
+// const $ItemEntityRenderer = Java.loadClass("net.minecraft.client.renderer.entity.ItemEntityRenderer")
+// const $EntityRenderer = Java.loadClass("net.minecraft.client.renderer.entity.EntityRenderer")
+// NativeEvents.onEvent($EntityRenderersEvent$RegisterRenderers, (e) => {
+// 	e.registerEntityRenderer(
+// 		$EntityType.ITEM,
+// 		(dispatcher) => {
+// 			return new JavaAdapter(
+// 				$ItemEntityRenderer,
+// 				{
+// 					/**
+// 					 * 
+// 					 * @param {Internal.ItemEntity} pEntity 
+// 					 * @param {number} pEntityYaw 
+// 					 * @param {number} pPartialTicks 
+// 					 * @param {PoseStack} pMatrixStack 
+// 					 * @param {Internal.MultiBufferSource} pBuffer 
+// 					 * @param {number} pPackedLight 
+// 					 */
+// 					m_7392_: function (pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight) {
+// 						if (pEntity.item.id == "kubejs:jar") {
+// 							new $EntityRenderer(dispatcher).render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight)
+// 							global.itemTestRender(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight)
+// 						} else {
+// 							new $ItemEntityRenderer(dispatcher).render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight)
+// 						}
+// 					}
+// 				},
+// 				dispatcher
+// 			)
+// 		}
+// 	)
+// })
+
+// /**
+//  * 
+//  * @param {Internal.ItemEntity} pEntity 
+//  * @param {number} pEntityYaw 
+//  * @param {number} pPartialTicks 
+//  * @param {PoseStack} pMatrixStack 
+//  * @param {Internal.MultiBufferSource} pBuffer 
+//  * @param {number} pPackedLight 
+//  */
+// global.itemTestRender = (pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight) => {
+// 	let bPos = new BlockPos(parseInt(pEntity.x), parseInt(pEntity.y) + 1, parseInt(pEntity.z));//获取亮度
+// 	const mc = Client;
+// 	let light = LevelRenderer.getLightColor(mc.level, bPos);
+// 	// console.log(light)
+// 	const m = pMatrixStack.last().pose();
+// 	const nbt = pEntity.item.nbt
+// 	if (!nbt) return;
+// 	const BlockEntityTag = nbt.getCompound("BlockEntityTag")
+// 	if (!BlockEntityTag) return;
+// 	const data = BlockEntityTag.getCompound("data")
+// 	if (!data) return;
+// 	const fluidTank = data.getCompound("fluidTank")
+// 	if (!fluidTank) return;
+// 	// console.log(fluidTank)
+// 	if (!fluidTank.getString("FluidName") && !fluidTank.getString("Amount")) {
+// 		return;
+// 	}
+// 	let id = fluidTank.getString("FluidName")
+// 	let amount = fluidTank.getInt("Amount")
+// 	let fluid = Fluid.of(id, amount)
+// 	if (fluid.isEmpty()) {
+// 		return;
+// 	}
+// 	const builder = pBuffer.getBuffer($RenderType.translucent());
+
+// 	mc.getTextureManager().bindForSetup($TextureAtlas.LOCATION_BLOCKS);
+// 	const sprite = mc.getTextureAtlas($TextureAtlas.LOCATION_BLOCKS).apply($IClientFluidTypeExtensions.of(fluid.fluidStack.getFluid()).getStillTexture(fluid));
+
+// 	const n = pMatrixStack.last().normal();
+// 	const color = $IClientFluidTypeExtensions.of(fluid.fluidStack.getFluid()).getTintColor(fluid.fluidStack);
+// 	const r = ((color >> 16) & 255) / 255;
+// 	const g = ((color >> 8) & 255) / 255;
+// 	const b = ((color >> 0) & 255) / 255;
+// 	const a = 1;
+
+// 	const s0 = 3.2 / 16;
+// 	const s1 = 1 - s0;
+
+// 	const y0 = 0.2 / 16;
+// 	const y1 = (0.2 + 12.6 * amount / 8000) / 16;
+
+// 	const u0 = sprite.getU(3);
+// 	const v0 = sprite.getV0();
+// 	const u1 = sprite.getU(13);
+// 	const v1 = sprite.getV(y1 * 16);
+
+// 	const u0top = sprite.getU(3);
+// 	const v0top = sprite.getV(3);
+// 	const u1top = sprite.getU(13);
+// 	const v1top = sprite.getV(13);
+
+// 	const packedOverlay = $OverlayTexture.RED_OVERLAY_V;
+// 	builder.vertex(m, s0, y1, s0).color(r, g, b, a).uv(u0top, v0top).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s0, y1, s1).color(r, g, b, a).uv(u0top, v1top).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y1, s1).color(r, g, b, a).uv(u1top, v1top).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y1, s0).color(r, g, b, a).uv(u1top, v0top).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+
+// 	builder.vertex(m, s0, y0, s0).color(r, g, b, a).uv(u0top, v0top).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y0, s0).color(r, g, b, a).uv(u1top, v0top).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y0, s1).color(r, g, b, a).uv(u1top, v1top).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s0, y0, s1).color(r, g, b, a).uv(u0top, v1top).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+
+// 	builder.vertex(m, s0, y1, s1).color(r, g, b, a).uv(u0, v0).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s0, y0, s1).color(r, g, b, a).uv(u0, v1).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y0, s1).color(r, g, b, a).uv(u1, v1).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y1, s1).color(r, g, b, a).uv(u1, v0).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+
+// 	builder.vertex(m, s0, y1, s0).color(r, g, b, a).uv(u0, v0).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y1, s0).color(r, g, b, a).uv(u1, v0).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y0, s0).color(r, g, b, a).uv(u1, v1).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s0, y0, s0).color(r, g, b, a).uv(u0, v1).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+
+// 	builder.vertex(m, s0, y1, s0).color(r, g, b, a).uv(u0, v0).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s0, y0, s0).color(r, g, b, a).uv(u0, v1).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s0, y0, s1).color(r, g, b, a).uv(u1, v1).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s0, y1, s1).color(r, g, b, a).uv(u1, v0).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+
+// 	builder.vertex(m, s1, y1, s0).color(r, g, b, a).uv(u0, v0).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y1, s1).color(r, g, b, a).uv(u1, v0).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y0, s1).color(r, g, b, a).uv(u1, v1).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// 	builder.vertex(m, s1, y0, s0).color(r, g, b, a).uv(u0, v1).overlayCoords(packedOverlay).uv2(light).normal(n, 0, 1, 0).endVertex();
+// }

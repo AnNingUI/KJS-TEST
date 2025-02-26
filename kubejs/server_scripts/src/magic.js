@@ -88,18 +88,18 @@ ItemEvents.rightClicked('kubejs:magic_book', (e) => {
                                     //         method.invoke(Et, x, y, z);
                                     //     }
                                     // });
-                                    const edx = x - et.getX();
-                                    const edy = y - et.getY();
-                                    const edz = z - et.getZ();
-                                    const elength = sqrt(edx * edx + edy * edy + edz * edz);
-                                    const estepX = edx / elength;
-                                    const estepY = edy / elength;
-                                    const estepZ = edz / elength;
+                                    let edx = x - Et.getX();
+                                    let edy = y - Et.getY();
+                                    let edz = z - Et.getZ();
+                                    let elength = sqrt(edx * edx + edy * edy + edz * edz);
+                                    let estepX = edx / elength;
+                                    let estepY = edy / elength;
+                                    let estepZ = edz / elength;
                                     random() > 0.5 && NoPlayList.length < 20 && Et.moveTo(
                                         new Vec3d(
-                                            et.getX() + estepX * 0.005,
-                                            et.getY() + estepY * 0.005,
-                                            et.getZ() + estepZ * 0.005
+                                            et.getX() + estepX * 0.0005,
+                                            et.getY() + estepY * 0.0005,
+                                            et.getZ() + estepZ * 0.0005
                                         )
                                     )
                                     // Et["void moveTo(double,double,double)"](x,y,z)

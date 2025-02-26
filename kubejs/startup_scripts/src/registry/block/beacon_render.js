@@ -135,3 +135,4 @@ const kjs$getRadius = (i) => {
 StartupEvents.init((e) => {
     $ModLoadingContext.get().registerConfig($ModConfig$Type.CLIENT, Config.SPEC);
 })
+
