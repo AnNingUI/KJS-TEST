@@ -43,9 +43,7 @@ My Vscode Plugin:
 
 const $Axis = Java.loadClass("com.mojang.math.Axis");
 const $RenderType = Java.loadClass("net.minecraft.client.renderer.RenderType");
-const $TextureAtlas = Java.loadClass("net.minecraft.client.renderer.texture.TextureAtlas");
 const $ItemDisplayContext = Java.loadClass("net.minecraft.world.item.ItemDisplayContext");
-const $IClientFluidTypeExtensions = Java.loadClass("net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions");
 const $MekanismRenderer = Java.loadClass("mekanism.client.render.MekanismRenderer");
 const $MekanismISTER = Java.loadClass("mekanism.client.render.item.MekanismISTER");
 const $RenderFluidTank = Java.loadClass("mekanism.client.render.tileentity.RenderFluidTank")
@@ -391,6 +389,9 @@ global.testJarItemRender = (itemStack, idCtx, poseStack, buffer, packedLight, pa
         scale
     )
     poseStack.translate(tX, tY, tZ);
+
+    // If you want to extend or modify it, please go to ./client_script/src/network/render/test_render.js to see its specific implementation. // LINK - ./client_script/src/network/render/test_render.js
+    // 如果你要扩展或者修改它，请去./client_script/src/network/render/test_render.js查看他的具体实现 // LINK - ./client_script/src/network/render/test_render.js
     MJSRenderUtils.renderFluidModel(
         fluid,
         fluidScale,
@@ -480,6 +481,9 @@ ClientEvents.init(event => {
                         return;
                     }
                     let fluidScale = amount / 8000;
+
+                    // If you want to extend or modify it, please go to ./client_script/src/network/render/test_render.js to see its specific implementation. // LINK - ./client_script/src/network/render/test_render.js
+                    // 如果你要扩展或者修改它，请去./client_script/src/network/render/test_render.js查看他的具体实现 // LINK - ./client_script/src/network/render/test_render.js
                     MJSRenderUtils.renderFluidModel(
                         fluid,
                         fluidScale,

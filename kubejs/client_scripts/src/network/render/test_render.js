@@ -1,4 +1,29 @@
 /**
+If you need to use this code, use `Java.loadClass` to load the following classes
+如果你需要使用此代码，请使用 `Java.loadClass` 加载以下类
+const $RenderType                      
+    = Java.loadClass("net.minecraft.client.renderer.RenderType")
+const $TextureAtlas 
+    = Java.loadClass("net.minecraft.client.renderer.texture.TextureAtlas");
+const $IClientFluidTypeExtensions
+    = Java.loadClass("net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions");
+ */
+
+/**
+This part is only for learning, please practice me if there is any copyright problem!
+And thanks to Lat for solving a momentary rendering problem with this code!
+
+这部分仅作为学习示例，如果出现版权问题请练习我
+也十分感谢 Lat 的这一份代码解决了我一时的渲染问题
+ */
+const $TextureAtlas
+    = Java.loadClass("net.minecraft.client.renderer.texture.TextureAtlas");
+const $IClientFluidTypeExtensions
+    = Java.loadClass("net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions");
+
+/**
+ * @author lat | Kristiāns Micītis
+ * @link https://github.com/FTBTeam/FTB-Jar-Mod/blob/main/src/main/java/dev/ftb/mods/ftbjarmod/block/entity/render/JarBlockEntityRenderer.java
  * 
  * @param {Internal.FluidStackJS} fluid 
  * @param {number} fluidScale 

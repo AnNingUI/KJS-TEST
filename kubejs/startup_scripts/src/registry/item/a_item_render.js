@@ -3,13 +3,13 @@ StartupEvents.registry("item", e => {
     e.create("test_item", "render_basic")
         .isCustomRenderer(true)
         .renderByItem((itemStack, itemDisplayCtx, poseStack, buffer, packedLight, packedOverlay) => {
-            // let gameTime = Date.now(); // Use current time as a substitute for game time
-            // console.log(gameTime)
-            // let yOffset = 0;
-            // let height = 16; // Set the height of the beam
-            // let colors = [1 / (gameTime % 255), 1 / (gameTime % 255 + 20), 1 / (gameTime % 255 + 40)]; // Example color for the beam
-            // let BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
-            // renderBeaconBeam(poseStack, buffer, BEAM_LOCATION, 0.0, 1.0, gameTime, yOffset, height, colors, 0.2, 0.25);
+            let gameTime = Date.now(); // Use current time as a substitute for game time
+            console.log(gameTime)
+            let yOffset = 0;
+            let height = 16; // Set the height of the beam
+            let colors = [1 / (gameTime % 255), 1 / (gameTime % 255 + 20), 1 / (gameTime % 255 + 40)]; // Example color for the beam
+            let BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
+            renderBeaconBeam(poseStack, buffer, BEAM_LOCATION, 0.0, 1.0, gameTime, yOffset, height, colors, 0.2, 0.25);
             // let itemRenderer = Client.getItemRenderer();
             // let bakedModel1 = Client.getModelManager().getModel(new ModelResourceLocation(Static.rl("infinity_sword"), "inventory"));
         })
@@ -155,6 +155,6 @@ function renderQuad(pose, normal, consumer, red, green, blue, alpha, minY, maxY,
 }
 
 const frac = (i) => {
-    let u= Math.floor(i);
+    let u = Math.floor(i);
     return i - u;
 }

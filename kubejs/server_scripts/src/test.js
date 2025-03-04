@@ -9,5 +9,4 @@ ItemEvents.rightClicked((e) => {
     //         z: z
     //     }
     // )
-    console.log(Java.loadClass("com.anningui.modifyjs.callback.BlockItemBuilderMap").mjs$customRendererMap)
 })
