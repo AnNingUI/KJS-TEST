@@ -1,0 +1,385 @@
+ModList:
+    kubejs: 
+        2001.6.5-build.16
+    
+    fabric_renderer_api_v1: 
+        3.2.1+cf68abbe77
+    
+    mobbattle: 
+        1.20.1-2.4.12
+    
+    geckolib: 
+        4.7
+    
+    powerfuljs: 
+        1.6.1
+    
+    fabric_item_api_v1: 
+        2.1.28+4d0bbcfa77
+    
+    fabric_rendering_fluids_v1: 
+        3.0.28+4ac5e37a77
+    
+    fabric_models_v0: 
+        0.4.2+7c3892a477
+    
+    kubejsadditions: 
+        4.3.3
+    
+    gpumemleakfix: 
+        1.20.1-1.8
+    
+    rubidium: 
+        0.7.1
+    
+    nanhealthfixer: 
+        1.20.1-0.0.1
+    
+    fabric_convention_tags_v1: 
+        1.5.5+fa3d1c0177
+    
+    madparticle: 
+        0.5.3
+    
+    xaeroworldmap: 
+        1.39.4
+    
+    fabric_command_api_v1: 
+        1.2.34+f71b366f77
+    
+    modernfix: 
+        5.20.2+mc1.20.1
+    
+    citadel: 
+        2.6.1
+    
+    rei_plugin_compatibilities: 
+        12.0.93
+    
+    fabric_block_view_api_v2: 
+        1.0.1+0767707077
+    
+    fabric_command_api_v2: 
+        2.2.13+561530ec77
+    
+    threatengl: 
+        1.3.3-release.1
+    
+    fabric_data_attachment_api_v1: 
+        1.0.0+30ef839e77
+    
+    mixinextras: 
+        0.2.0-rc.2
+    
+    redirected: 
+        1.0.0
+    
+    fabric_screen_api_v1: 
+        2.0.8+45a670a577
+    
+    cloth_config: 
+        11.1.136
+    
+    dummmmmmy: 
+        1.20-2.0.6
+    
+    fabric_api: 
+        0.92.2+1.11.9+1.20.1
+    
+    fabric_content_registries_v0: 
+        4.0.11+a670df1e77
+    
+    twilightforest: 
+        4.3.2508
+    
+    sodiumdynamiclights: 
+        1.0.9
+    
+    embeddium: 
+        0.3.31+mc1.20.1
+    
+    farmersdelight: 
+        1.20.1-1.2.7
+    
+    fabric_game_rule_api_v1: 
+        1.0.40+683d4da877
+    
+    fabric_api_lookup_api_v1: 
+        1.6.36+67f9824077
+    
+    botania: 
+        1.20.1-447-FORGE
+    
+    lionfishapi: 
+        2.4-Fix
+    
+    spark: 
+        1.10.53
+    
+    cataclysm: 
+        2.57
+    
+    curios: 
+        5.12.1+1.20.1
+    
+    patchouli: 
+        1.20.1-84.1-FORGE
+    
+    oculus: 
+        1.8.0
+    
+    cullleaves: 
+        3.2.0
+    
+    cerbons_api: 
+        1.1.0
+    
+    noisium: 
+        2.3.0+mc1.20-1.20.1
+    
+    ftbultimine: 
+        2001.1.5
+    
+    fabric_entity_events_v1: 
+        1.6.0+6274ab9d77
+    
+    constructionwand: 
+        1.20.1-2.11
+    
+    lootjs: 
+        1.20.1-2.12.0
+    
+    twilightdelight: 
+        2.0.13
+    
+    architectury: 
+        9.2.14
+    
+    fabric_loot_api_v2: 
+        1.2.1+eb28f93e77
+    
+    pvz_zengarden: 
+        1.5.2
+    
+    fabric_rendering_data_attachment_v1: 
+        0.3.37+a6081afc77
+    
+    fabric_networking_api_v1: 
+        1.3.11+503a202477
+    
+    l2library: 
+        2.4.16
+    
+    t88: 
+        0.6.0-pre.0
+    
+    probejs: 
+        6.0.1
+    
+    yeetusexperimentus: 
+        2.3.0-build.4+mc1.20.1
+    
+    fabric_lifecycle_events_v1: 
+        2.2.22+afab492177
+    
+    fabric_key_binding_api_v1: 
+        1.0.37+561530ec77
+    
+    fabric_client_tags_api_v1: 
+        1.1.2+5d6761b877
+    
+    fabric_transfer_api_v1: 
+        3.3.5+631c9cd677
+    
+    fabric_dimensions_v1: 
+        2.1.54+8005d10d77
+    
+    rhino: 
+        2001.2.3-build.10
+    
+    ftblibrary: 
+        2001.2.9
+    
+    fabric_model_loading_api_v1: 
+        1.0.3+6274ab9d77
+    
+    jei: 
+        15.9999
+    
+    resource_explorer: 
+        1.1
+    
+    attributefix: 
+        21.0.4
+    
+    fabric_screen_handler_api_v1: 
+        1.3.30+561530ec77
+    
+    fabric_resource_loader_v0: 
+        0.11.10+bcd08ed377
+    
+    mekanism: 
+        10.4.15
+    
+    ponderjs: 
+        1.4.0
+    
+    eventjs: 
+        1.3.0
+    
+    fabric_rendering_v1: 
+        3.0.8+66e9a48f77
+    
+    chloride: 
+        1.5.0
+    
+    create: 
+        0.5.1.j
+    
+    fabric_renderer_indigo: 
+        1.5.2+b5b2da4177
+    
+    clumps: 
+        12.0.0.4
+    
+    fabric_mining_level_api_v1: 
+        2.1.50+561530ec77
+    
+    icterine: 
+        1.3.0
+    
+    champions: 
+        1.20.1-2.1.10.7
+    
+    midnightlib: 
+        1.4.2
+    
+    vintageimprovements: 
+        1.20.1-0.2.0.3
+    
+    txnilib: 
+        1.0.21
+    
+    bettertaskbar: 
+        1.7.0
+    
+    ars_nouveau: 
+        4.12.6
+    
+    fabric_particles_v1: 
+        1.1.2+78e1ecb877
+    
+    forge: 
+        47.3.1
+    
+    fabric_transitive_access_wideners_v1: 
+        4.3.1+1880499877
+    
+    minecraft: 
+        1.20.1
+    
+    alexscaves: 
+        2.0.2
+    
+    moonlight: 
+        1.20-2.13.71
+    
+    fabric_api_base: 
+        0.4.31+ef105b4977
+    
+    fabric_blockrenderlayer_v1: 
+        1.1.41+1d0da21e77
+    
+    jade: 
+        11.12.3+forge
+    
+    fabric_block_api_v1: 
+        1.0.11+0e6cb7f777
+    
+    morecategory: 
+        1.0.0
+    
+    fabric_resource_conditions_api_v1: 
+        2.3.8+9ad825cd77
+    
+    geckojs: 
+        2001forge-1.6.0
+    
+    modifyjs: 
+        1.1.0.0-forge
+    
+    roughlyenoughitems: 
+        12.1.785
+    
+    pipez: 
+        1.20.1-1.2.16
+    
+    entityjs: 
+        0.4.3-1.20.1
+    
+    flywheel: 
+        0.6.11-13
+    
+    xaerominimap: 
+        25.1.0
+    
+    fabric_item_group_api_v1: 
+        4.0.12+c9161c2d77
+    
+    bocchium: 
+        1.20.1-0.0.3
+    
+    renderjs: 
+        1.1.9
+    
+    freecam: 
+        1.2.1+1.20
+    
+    fabric_biome_api_v1: 
+        13.0.13+dc36698e77
+    
+    xaeroplus: 
+        2.26.3
+    
+    fabric_registry_sync_v0: 
+        2.3.3+1c0ea72177
+    
+    kubejs_create: 
+        2001.2.5-build.2
+    
+    create_echo_wind: 
+        1.20.1-0.0.1
+    
+    createmetallurgy: 
+        0.0.6-1.20.1
+    
+    fabric_recipe_api_v1: 
+        1.0.21+514a076577
+    
+    ferritecore: 
+        6.0.1
+    
+    fabric_object_builder_api_v1: 
+        11.1.3+2174fc8477
+    
+    fabric_sound_api_v1: 
+        1.0.13+4f23bd8477
+    
+    lodestone: 
+        1.20.1-1.6.4.1
+    
+    fabric_message_api_v1: 
+        5.1.9+52cc178c77
+    
+    fabric_data_generation_api_v1: 
+        12.3.4+369cb3a477
+    
+    opack2reload: 
+        1.0.1
+    
+    fabric_events_interaction_v0: 
+        0.6.2+0d0bd5a777
+    
+    ibeeditor: 
+        2.2.8
+    

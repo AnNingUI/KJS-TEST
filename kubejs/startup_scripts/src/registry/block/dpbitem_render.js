@@ -1,5 +1,45 @@
 // startup_scripts
 
+/**
+If you're coming to see all the code for the Jar [jar], be sure to read this comment
+[Block Renderer section]: use RenderJS + ModifyJS for rendering, as described in this script's // ANCHOR - Jar Block Renderer
+[Block Capability section]: Use PowerfulJS, as described in this script's // ANCHOR - Jar Fluid Capability
+[Item Renderer section]: Renders using ModifyJS, as described in this script's // ANCHOR - Jar Item Renderer
+[Item Tooltip section]: in client_script/src/tooltip.js at line 87
+
+如果你是来看Jar[罐子]的所有代码，请一定要看这个注释
+[方块渲染部分]: 使用RenderJS + ModifyJS进行渲染 // ANCHOR - Jar Block Renderer
+[方块能力部分]: 使用PowerfulJS，具体在本脚本的 // ANCHOR - Jar Fluid Capability
+[物品渲染部分]: 使用ModifyJS进行渲染，具体在本脚本的 // ANCHOR - Jar Item Renderer
+[物品Tooltip部分]: 在client_script/src/tooltip.js的第87行 // LINK - ./client_script/src/tooltip.js
+
+Notes:
+The version of the mod I'm using
+- ProbeJS: v1.20.1-6.0.1
+- RenderJS: v1.20.1-1.1.9
+- PowerfulJS: v1.20.1-1.6.1
+- ModifyJS: v1.20.1-1.1.0.0-forge
+  ... Other mods: // LINK - ./modList.txt
+If there is any problem, please check if the corresponding version of the mod is installed.
+If you see a missing Java class, use `Java.loadClass` to load the Java class.
+
+注意：
+我使用的mod版本
+- ProbeJS: v1.20.1-6.0.1
+- RenderJS: v1.20.1-1.1.9
+- PowerfulJS: v1.20.1-1.6.1
+- ModifyJS: v1.20.1-1.1.0.0-forge
+  ...其他mod：// LINK - ./modList.txt
+如果有什么问题，请查看是否安装对应版本的mod，
+如果缺少显示缺少Java类，请用 `Java.loadClass` 来加载Java类
+
+My Vscode Plugin:
+- Comment Anchors: Added annotation anchors
+
+我的vscode插件：
+- Comment Anchors: 添加注释锚点
+ */
+
 
 const $Axis = Java.loadClass("com.mojang.math.Axis");
 const $RenderType = Java.loadClass("net.minecraft.client.renderer.RenderType");
@@ -122,6 +162,7 @@ StartupEvents.registry("block", event => {
                 }
             })
             info.attachCapability(
+                // ANCHOR - Jar Fluid Capability
                 CapabilityBuilder.FLUID.customBlockEntity()
                     .getCapacity((be) => 8000)
                     .getFluid((/**@type {Internal.BlockEntityJS}*/be,/**@type {Internal.FluidStackJS_}*/stack) => {
@@ -214,6 +255,7 @@ StartupEvents.registry("block", event => {
             }
         })
         .item((bb) => {
+            // ANCHOR - Jar Item Renderer
             bb.isCustomRenderer(true)
             bb.renderByItem((itemStack, idCtx, poseStack, buffer, packedLight, packedOverlay) => {
                 global.testJarItemRender(itemStack, idCtx, poseStack, buffer, packedLight, packedOverlay)
@@ -278,6 +320,7 @@ global.testJarItemRender = (itemStack, idCtx, poseStack, buffer, packedLight, pa
         SwitchMap.caseOf($ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, 0.6),
         SwitchMap.caseOf($ItemDisplayContext.FIRST_PERSON_LEFT_HAND, -0.65),
         SwitchMap.caseOf($ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, 0.65),
+        SwitchMap.caseOf($ItemDisplayContext.GROUND, -0.5),
     )
     let tZMap = SwitchMap.of(
         SwitchMap.defOf(() => 0),
@@ -285,6 +328,7 @@ global.testJarItemRender = (itemStack, idCtx, poseStack, buffer, packedLight, pa
         SwitchMap.caseOf($ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, -0.2),
         SwitchMap.caseOf($ItemDisplayContext.FIRST_PERSON_LEFT_HAND, -0.35),
         SwitchMap.caseOf($ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, 0.35),
+        SwitchMap.caseOf($ItemDisplayContext.GROUND, 1.5),
     )
     let scale = /** @type {number} */(scaleMap.get(idCtx));
     let rotateY = /** @type {number} */(rotateYMap.get(idCtx));
@@ -416,6 +460,7 @@ ClientEvents.init(event => {
                 }
             })
     )
+    // ANCHOR - Jar Block Renderer
     event.registerBlockEntityRenderer("kubejs:jar", (context) =>
         RenderJSBlockEntityRenderer
             .create(context)

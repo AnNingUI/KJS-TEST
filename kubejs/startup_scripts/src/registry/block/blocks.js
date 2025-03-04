@@ -166,6 +166,10 @@ StartupEvents.registry("block", event => {
 		.placementState((callback) => callback.set(BlockProperties.FACING, callback.clickedFace))
 		.notSolid().fullBlock(false)
 
+	// event.create("test_block")
+	// .property(BlockProperties.FACING)
+	// .placementState((callback) => callback.set(BlockProperties.FACING, callback.clickedFace))
+
 	event.create("ttt").blockEntity((info) => {
 		info.initialData({ energy: 0 });
 		info.serverTick(GenRate, 0, (be) => {
