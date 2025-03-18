@@ -4,7 +4,6 @@ StartupEvents.registry("item", e => {
         .isCustomRenderer(true)
         .renderByItem((itemStack, itemDisplayCtx, poseStack, buffer, packedLight, packedOverlay) => {
             let gameTime = Date.now(); // Use current time as a substitute for game time
-            console.log(gameTime)
             let yOffset = 0;
             let height = 16; // Set the height of the beam
             let colors = [1 / (gameTime % 255), 1 / (gameTime % 255 + 20), 1 / (gameTime % 255 + 40)]; // Example color for the beam
@@ -13,8 +12,83 @@ StartupEvents.registry("item", e => {
             // let itemRenderer = Client.getItemRenderer();
             // let bakedModel1 = Client.getModelManager().getModel(new ModelResourceLocation(Static.rl("infinity_sword"), "inventory"));
         })
+
+    e.create("test_chestplate", "render_chestplate")
+        .addLayerRender((ctx) => global.testLayerRender(ctx))
+        .isCustomRenderer(true)
+        .renderByItem((itemStack, itemDisplayCtx, poseStack, buffer, packedLight, packedOverlay) => {
+            let gameTime = Date.now(); // Use current time as a substitute for game time
+            let yOffset = 0;
+            let height = 16; // Set the height of the beam
+            let colors = [1 / (gameTime % 255), 1 / (gameTime % 255 + 20), 1 / (gameTime % 255 + 40)]; // Example color for the beam
+            let BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
+            renderBeaconBeam(poseStack, buffer, BEAM_LOCATION, 0.0, 1.0, gameTime, yOffset, height, colors, 0.2, 0.25);
+        })
 })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 
+ * @param {Internal.ArmorLayerContext_} ctx 
+ */
+global.testLayerRender = (ctx) => {
+    let gameTime = Date.now() % 3600;
+    let { poseStack, buffer, packedLight } = ctx;
+    let model = MJSRenderUtils.getPlayerModel(Client.player);
+    let head = model.head;
+    let body = model.body;
+    let leftArm = model.leftArm;
+    let rightArm = model.rightArm;
+    let builder = buffer.getBuffer($RenderType.entitySolid(Client.player.getSkinTextureLocation()));
+    poseStack.pushPose();
+    // poseStack.translateX(-1.5)
+    // poseStack.translateZ(-1.5)
+    poseStack.translateY(-1.5)
+    poseStack.scale(2, 2, 2)
+    // poseStack.mulPose($Axis.YP.rotationDegrees(gameTime))
+    head.render(
+        poseStack,
+        builder,
+        packedLight,
+        $OverlayTexture.NO_OVERLAY
+    )
+    leftArm.render(
+        poseStack,
+        builder,
+        packedLight,
+        $OverlayTexture.NO_OVERLAY
+    )
+    rightArm.render(
+        poseStack,
+        builder,
+        packedLight,
+        $OverlayTexture.NO_OVERLAY
+    )
+    body.render(
+        poseStack,
+        builder,
+        packedLight,
+        $OverlayTexture.NO_OVERLAY
+    )
+    poseStack.popPose();
+}
 
 /**
  * 
@@ -158,3 +232,4 @@ const frac = (i) => {
     let u = Math.floor(i);
     return i - u;
 }
+

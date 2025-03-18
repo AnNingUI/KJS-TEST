@@ -15,23 +15,23 @@ const brainfuck = code => {
      */
     function nextSymbol(code, index, array, output, currentCell, loopPoint) {
         let symbol = code.split("")[index]
-        let nextIndex = index+1
+        let nextIndex = index + 1
 
-        switch(symbol) {
-            case ">": currentCell = (currentCell+1) % 256; break;
-            case "<": currentCell = currentCell>0 ? currentCell-1 : 255; break;
+        switch (symbol) {
+            case ">": currentCell = (currentCell + 1) % 256; break;
+            case "<": currentCell = currentCell > 0 ? currentCell - 1 : 255; break;
 
-            case "+": array[currentCell] = (array[currentCell]+1) % 256; break;
-            case "-": array[currentCell] = array[currentCell]>0 ? array[currentCell]-1 : 255; break;
+            case "+": array[currentCell] = (array[currentCell] + 1) % 256; break;
+            case "-": array[currentCell] = array[currentCell] > 0 ? array[currentCell] - 1 : 255; break;
 
             case ".": output += String.fromCharCode(array[currentCell]); break;
             case ",": console.log("[BF KJS] , not implemented, skipping."); break;
 
-            case "[": loopPoint = index+1; break;
-            case "]": loopPoint!=null && array[currentCell]!=0 ? nextIndex=loopPoint : null; break;
+            case "[": loopPoint = index + 1; break;
+            case "]": loopPoint != null && array[currentCell] != 0 ? nextIndex = loopPoint : null; break;
         }
 
-        if (nextIndex==code.length) return [output, currentCell, array]
+        if (nextIndex == code.length) return [output, currentCell, array]
         return nextSymbol(code, nextIndex, array, output, currentCell, loopPoint)
     }
 
@@ -41,3 +41,6 @@ const brainfuck = code => {
     }
 }
 global.brainfuck = brainfuck;
+
+
+

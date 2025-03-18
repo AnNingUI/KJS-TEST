@@ -1,3 +1,4 @@
+let $ItemEntity = Java.loadClass("net.minecraft.world.entity.item.ItemEntity")
 
 /**
 let apapEnergy = 0
@@ -62,52 +63,88 @@ LootJS.modifiers((event)=>{
 })
  */
 
-
+// Yeah, he's so cute.
 
 const _runFunLootJS = () => {
-let apapEnergy = 0;
-let jarFluidTank = {};
+    let apapEnergy = 0;
+    let jarFluidTank = {};
 
-// 监听方块破坏事件
-BlockEvents.broken(event => {
-    apapEnergy = getBlockData(event, "kubejs:aqaq", ["ForgeData", "energy"]) || 0;
-    jarFluidTank = getBlockData(event, "kubejs:jar", ["data", "fluidTank"]) || {};
-});
+    // 监听方块破坏事件
+    BlockEvents.broken(event => {
+        apapEnergy = getBlockData(event, "kubejs:aqaq", ["ForgeData", "energy"]) || 0;
+        jarFluidTank = getBlockData(event, "kubejs:jar", ["data", "fluidTank"]) || {};
+    });
 
-// 配置掉落修改器
-LootJS.modifiers(event => {
-    createLootModifier(
-        event,
-        "kubejs:aqaq",
-        block => {
-            let energy = block.id === "minecraft:air" ? apapEnergy : block?.entityData?.ForgeData?.energy;
-            apapEnergy = 0; // 重置全局变量
-            return energy > 0 ? { BlockEntityTag: { ForgeData: { energy: energy } } } : null;
-        },
-        "kubejs:aqaq"
-    );
+    // 配置掉落修改器
+    LootJS.modifiers(event => {
+        createLootModifier(
+            event,
+            "kubejs:aqaq",
+            block => {
+                let energy = block.id === "minecraft:air" ? apapEnergy : block?.entityData?.ForgeData?.energy;
+                apapEnergy = 0; // 重置全局变量
+                return energy > 0 ? { BlockEntityTag: { ForgeData: { energy: energy } } } : null;
+            },
+            "kubejs:aqaq"
+        );
 
-    createLootModifier(
-        event,
-        "kubejs:jar",
-        block => {
-            let fluidTank = block.id === "minecraft:air" ? jarFluidTank : block.entityData?.data?.fluidTank;
-            let amount = fluidTank?.Amount || 0;
-            let fluidName = fluidTank?.FluidName || "";
-            return amount > 0 && fluidName ? { BlockEntityTag: { data: { fluidTank: fluidTank } } } : null;
-        },
-        "kubejs:jar"
-    );
-});
+        createLootModifier(
+            event,
+            "kubejs:jar",
+            block => {
+                let fluidTank = block.id === "minecraft:air" ? jarFluidTank : block.entityData?.data?.fluidTank;
+                let amount = fluidTank?.Amount || 0;
+                let fluidName = fluidTank?.FluidName || "";
+                return amount > 0 && fluidName ? { BlockEntityTag: { data: { fluidTank: fluidTank } } } : null;
+            },
+            "kubejs:jar"
+        );
+    });
 }
+
+// const _runFunLootOnlyBlockEvents = () => {
+//     BlockEvents.broken(event => {
+//         let level = event.level;
+//         // event.cancel(); // 取消掉落事件
+//         let block = event.block;
+//         let pos = event.getBlock().pos;
+//         let eventMap = {
+//             "kubejs:aqaq": (e) => {
+//                 let OapapEnergy = getBlockData(e, "kubejs:aqaq", ["ForgeData", "energy"]) || 0;
+//                 let item = OapapEnergy > 0 ? Item.of("kubejs:aqaq", 1, {
+//                     BlockEntityTag: { ForgeData: { energy: OapapEnergy } }
+//                 }) : Item.of("kubejs:aqaq", 1);
+//                 Client.player.tell(item)
+//                 let entity = new $ItemEntity(level, pos.x, pos.y, pos.z, item)
+//                 level.addFreshEntity(entity)
+//             },
+//             "kubejs:jar": (e) => {
+//                 let OjarFluidTank = getBlockData(e, "kubejs:jar", ["data", "fluidTank"]);
+//                 let amount = OjarFluidTank.getInt("Amount") || 0;
+//                 let fluidName = OjarFluidTank.getString("FluidName") || "";
+//                 let newFT = amount > 0 && fluidName ? { BlockEntityTag: { data: { fluidTank: OjarFluidTank } } } : null;
+//                 let item = newFT ? Item.of("kubejs:jar", 1, newFT) : Item.of("kubejs:jar", 1);
+//                 let entity = new $ItemEntity(level, pos.x, pos.y, pos.z, item)
+//                 level.addFreshEntity(entity)
+//             }
+//         }
+//         eventMap[block.id](event)
+//         level.destroyBlock(pos, false)
+//     })
+// }
+// _runFunLootOnlyBlockEvents()
+
 
 LootJS.modifiers((e) => {
     e.addBlockLootModifier("kubejs:zio")
-    .addLoot("kubejs:zio")
+        .addLoot("kubejs:zio")
     e.addBlockLootModifier("kubejs:qqqqoo")
-    .addLoot("kubejs:qqqqoo")
+        .addLoot("kubejs:qqqqoo")
 })
 _runFunLootJS()
+
+
+
 
 /**
  * 

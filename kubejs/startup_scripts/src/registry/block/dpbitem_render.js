@@ -548,7 +548,6 @@ function colorLinearNum() {
 
 const renderByItem = (pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay) => {
     const degree = (Date.now() / 10) % 360
-    console.log(degree)
     let itemRenderer = Client.getItemRenderer();
     let bakedModel = itemRenderer.getModel(pStack, null, null, 1);
     pPoseStack.pushPose();
@@ -561,3 +560,10 @@ const renderByItem = (pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight
     itemRenderer.render(pStack, $ItemDisplayContext.NONE, false, pPoseStack, pBuffer, pPackedLight, pPackedOverlay, bakedModel);
     pPoseStack.popPose();
 }
+
+
+// BlockEvents.modification(e => {
+//     e.modify("chest", (e) => {
+//         e.setBlockBuilder()
+//     })
+// })
