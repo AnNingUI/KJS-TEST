@@ -10,10 +10,10 @@ const $IClientFluidTypeExtensions
  */
 
 /**
-This part is only for learning, please practice me if there is any copyright problem!
+This part is only for learning, please contact me if there is any copyright problem!
 And thanks to Lat for solving a momentary rendering problem with this code!
 
-这部分仅作为学习示例，如果出现版权问题请练习我
+这部分仅作为学习示例，如果出现版权问题请联系我
 也十分感谢 Lat 的这一份代码解决了我一时的渲染问题
  */
 const $TextureAtlas

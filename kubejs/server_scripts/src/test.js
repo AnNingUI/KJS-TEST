@@ -20,3 +20,19 @@ ItemEvents.entityInteracted("kubejs:test_animation_by_render", (e) => {
         })
     }
 })
+
+// let res = []
+// ServerEvents.recipes(e => {
+//     e.recipeStream({
+//         output: "minecraft:cake" // 指定输出物品是蛋糕
+//     }).forEach((r) => {
+//         res.push(r.json)
+//         // res.push(r.getId()) //获取ResourceLocation
+//     })
+// })
+// ItemEvents.rightClicked("cake", (e) => {
+//     let { player } = e
+//     player.tell(res)
+// })
+
+// Utils.runAsync
