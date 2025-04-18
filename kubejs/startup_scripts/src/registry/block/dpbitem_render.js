@@ -80,40 +80,48 @@ StartupEvents.registry("block", event => {
             });
         })
         .rightClick(e => {
+            const { player, block } = e;
+            const playerItem = e.player.getHeldItem("main_hand")
+            const { id, nbt, count, maxStackSize } = playerItem;
+            const isC = player.isCreative()
             /**
              * 
-             * @param {*} block 
-             * @param {*} item 
-             * @param {*} isNew
+             * @param {ReturnType<typeof Item.of>} heldItem 
+             * @param {Internal.Player} player 
              */
-            const updateItems = (block, item, isNew) => {
-                const items = block.getEntityData().attachments[0].items || [];
-                if (isNew) {
-                    items.push(item);
-                } else {
-                    Object.assign(items[0], item);
+            const gc = (heldItem, player) => {
+                if (!player.isCreative()) {
+                    heldItem.shrink(amount);
+                    if (heldItem.isEmpty()) {
+                        player.setItemInHand("main_hand", Item.empty);
+                    }
                 }
-                const newAttachment = {
-                    id: item.id,
-                    Count: item.Count
-                };
-                if (item.tag) {
-                    newAttachment.tag = item.tag;
-                }
-                block.mergeEntityData({
-                    attachments: [{ items: [newAttachment] }]
-                });
-            };
-
-            let { id, nbt, count, setCount } = e.player.getHeldItem("main_hand");
-            if (id === "minecraft:air") return;
-            const bitem = { id: id, Count: count };
-            if (nbt) {
-                bitem.tag = nbt;
             }
-            const items = e.block.getEntityData().attachments[0].items || [];
-            updateItems(e.block, { Count: bitem.Count, Slot: 0, id: bitem.id, tag: bitem.tag }, items.length === 0);
-            setCount(0);
+            if (playerItem.isEmpty()) return;
+            const item = block.inventory.getStackInSlot(0);
+            if (item.isEmpty()) {
+                const onlyOneItem = nbt ? Item.of(
+                    id, 1, nbt
+                ) : Item.of(id, 1);
+                if (isC) {
+                    block.inventory.setStackInSlot(0, onlyOneItem);
+                } else {
+                    block.inventory.setStackInSlot(0, onlyOneItem);
+                    gc(playerItem, player);
+                }
+            } else {
+                if (item.equals(playerItem)) {
+                    if (item.count + 1 > maxStackSize) return;
+                    gc(playerItem, player);
+                    block.inventory.setStackInSlot(0, Item.of(id, item.count + 1, nbt));
+                } else {
+                    const newInvItem = block.inventory.getStackInSlot(0);
+                    block.inventory.setStackInSlot(0, Item.empty)
+                    gc(playerItem, player);
+                    player.setMainHandItem(newInvItem);
+                    block.inventory.setStackInSlot(0, playerItem);
+                }
+            }
         })
         .box(2, 0, 2, 14, 3, 14)
         .box(4, 3, 4, 12, 12, 12)

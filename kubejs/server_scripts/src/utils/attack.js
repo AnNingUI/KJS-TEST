@@ -139,3 +139,5 @@ const setTargetByPlayer = (entity, player) => {
 		!entity.getTarget() && !player.creative && entity.setTarget(player)
 	}
 }
+
+

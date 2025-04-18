@@ -82,7 +82,7 @@ global.Test_MultiBlock_Machine = () =>
     )
 
 
-global.blastFurnace = () => 
+global.blastFurnace = () =>
     $PatchouliAPI.get().makeMultiblock(
         [
             ["___", "___", "___"],
@@ -166,7 +166,7 @@ CreateEvents.spoutHandler((event) => {
     //? 返回的整數表示此操作應該消耗多少單位液體。
     //? 單位視模組載入器而不同，Forge = 1MB、Fabric = 1 unit
     //? 1 B（Bucket，桶） = 1000 MB（MiliBucket，千分之一桶） = 81000 unit（單位流體）
-    
+
 
     //这个是芒果笔记里面的示例
     event.add(
@@ -237,27 +237,27 @@ CreateEvents.spoutHandler((event) => {
         }
     );
 
-    
-    
+
+
     global.customCastingrecipes.forEach(rs => {
         event.add(
             rs.id, // ID
             'minecraft:hopper', // 目標方塊
             (block, fluid, simulate) => {
                 if (fluid.id === rs.fluid.id && fluid.amount >= rs.amount) {
-                    let aabb = AABB.of(block.x, block.y+1, block.z, block.x + 1, block.y + 2, block.z + 1);
-                    let glow_item_frame = block.level.getEntitiesOfClass($GlowItemFrame,aabb,EntitySelector.ENTITY_STILL_ALIVE)
-                    let glow_item_item = /**@type {Internal.GlowItemFrame} */ (glow_item_frame[0] ==undefined ? undefined : glow_item_frame[0].item);
+                    let aabb = AABB.of(block.x, block.y + 1, block.z, block.x + 1, block.y + 2, block.z + 1);
+                    let glow_item_frame = block.level.getEntitiesOfClass($GlowItemFrame, aabb, EntitySelector.ENTITY_STILL_ALIVE)
+                    let glow_item_item = /**@type {Internal.GlowItemFrame} */ (glow_item_frame[0] == undefined ? undefined : glow_item_frame[0].item);
                     let length = block.getEntityData().Items.length
                     let level = block.level
                     // global.prtList([glow_item_frame,glow_item_item])
                     if (!simulate && glow_item_frame !== undefined && glow_item_item !== undefined && length < 5) {
-                        if(glow_item_item.id == rs.template.id){
+                        if (glow_item_item.id == rs.template.id) {
                             let entity3 = level.createEntity('minecraft:item');
-                            entity3.mergeNbt({Item:{id:rs.output.id,Count:1}});
+                            entity3.mergeNbt({ Item: { id: rs.output.id, Count: 1 } });
                             entity3.setPosition(block.offset(0, 1, 0).x + 0.5, block.offset(0, 1, 0).y - 0.2, block.offset(0, 1, 0).z + 0.5);
                             entity3.spawn();
-                            
+
                         }
                     }
                     // global.prtList([glow_item_frame !== undefined && glow_item_item !== undefined && glow_item_item.id == "minecraft:fire_charge"])

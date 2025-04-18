@@ -52,11 +52,18 @@ global.rayaprimeLayerRender = (ctx) => {
         )
         poseStack.popPose();
     })
+    RenderJSRenderSystem.depthMask(true);
+    RenderJSRenderSystem.disableBlend();
+    RenderJSRenderSystem.enableCull();
 }
 
 
 global.rayaprimeRenderByItem = (itemStack, itemDisplayCtx, poseStack, buffer, packedLight, packedOverlay) => {
     if (!Platform.isClientEnvironment()) return;
+    RenderJSRenderSystem.enableBlend();
+    RenderJSRenderSystem.defaultBlendFunc();
+    RenderJSRenderSystem.depthMask(false);
+    RenderJSRenderSystem.disableCull();
     let model = MJSRenderUtils.getModel(new ResourceLocation(
         "arc:entity/armor/rayaprime"
     ))
@@ -73,6 +80,9 @@ global.rayaprimeRenderByItem = (itemStack, itemDisplayCtx, poseStack, buffer, pa
         packedLight, $OverlayTexture.NO_OVERLAY
     )
     poseStack.popPose();
+    RenderJSRenderSystem.depthMask(true);
+    RenderJSRenderSystem.disableBlend();
+    RenderJSRenderSystem.enableCull();
 }
 
 /**
@@ -90,6 +100,10 @@ global.rayaprimeRenderByItem = (itemStack, itemDisplayCtx, poseStack, buffer, pa
 global.cyberpunklayerRender = (ctx, type) => {
     if (!Platform.isClientEnvironment()) return;
     let { poseStack, buffer, packedLight, livingEntity } = ctx;
+    RenderJSRenderSystem.enableBlend();
+    RenderJSRenderSystem.defaultBlendFunc();
+    RenderJSRenderSystem.depthMask(false);
+    RenderJSRenderSystem.disableCull();
     MJSRenderUtils.runOnHumanoidModel(livingEntity, (entityModel) => {
         let { body, leftArm, rightArm, leftLeg, rightLeg } = entityModel
         let sMap = SwitchMap.of(
@@ -187,6 +201,9 @@ global.cyberpunklayerRender = (ctx, type) => {
         let fun = sMap.get(type)
         fun()
     })
+    RenderJSRenderSystem.depthMask(true);
+    RenderJSRenderSystem.disableBlend();
+    RenderJSRenderSystem.enableCull();
 }
 
 
@@ -202,3 +219,8 @@ if (Platform.isClientEnvironment()) {
         e.register("arc", "entity/armor/cyberpunk_right_leg")
     })
 }
+
+
+// StartupEvents.registry("painting_variant", (e) => {
+//     e.create("test").width(16).height(16)
+// })

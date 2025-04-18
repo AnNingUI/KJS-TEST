@@ -29,6 +29,16 @@ const $RenderGuiEvent$Pre = Java.loadClass("net.minecraftforge.client.event.Rend
  */
 const NOnEvent = (event, handler) => NativeEvents.onEvent(event, handler)
 
+const $NativeEvents = {
+    /**
+     * @template T
+     * @param {T} event 
+     * @param {(event: InstanceType<T>) => void} handler 
+     * @returns 
+     */
+    onEvent: (event, handler) => NativeEvents.onEvent(event, handler)
+}
+
 
 let NativeImage = Java.loadClass("com.mojang.blaze3d.platform.NativeImage")
 /**
@@ -197,7 +207,7 @@ Card.prototype.up = function (upNum) {
 
 
 
-NOnEvent($RenderGuiEvent$Pre, function (e) {
+$NativeEvents.onEvent($RenderGuiEvent$Pre, (e) => {
     let { guiGraphics } = e;
     let poseStack = guiGraphics.pose();
     let path = new ResourceLocation("arc:textures/gui/test_card.png")
