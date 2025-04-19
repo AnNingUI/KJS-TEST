@@ -51,7 +51,10 @@ const $FaceDisplay = Java.loadClass("mekanism.client.render.RenderResizableCuboi
 const $Sheets = Java.loadClass("net.minecraft.client.renderer.Sheets");
 
 const OMMMMO = 0;
-
+/**
+ * @typedef { ReturnType<typeof Item.of> } ItemStack
+ * @typedef { { id: string, count: number, tag?: Internal.Tag } } ItemTag
+ */
 StartupEvents.registry("block", event => {
     event.create("pedestal")
         .blockEntity(info => {
@@ -80,48 +83,41 @@ StartupEvents.registry("block", event => {
             });
         })
         .rightClick(e => {
-            const { player, block } = e;
-            const playerItem = e.player.getHeldItem("main_hand")
-            const { id, nbt, count, maxStackSize } = playerItem;
-            const isC = player.isCreative()
             /**
              * 
-             * @param {ReturnType<typeof Item.of>} heldItem 
-             * @param {Internal.Player} player 
+             * @param {Internal.BlockEntityJS} block 
+             * @param {*} item 
+             * @param {boolean} isNew
              */
-            const gc = (heldItem, player) => {
-                if (!player.isCreative()) {
-                    heldItem.shrink(amount);
-                    if (heldItem.isEmpty()) {
-                        player.setItemInHand("main_hand", Item.empty);
-                    }
-                }
-            }
-            if (playerItem.isEmpty()) return;
-            const item = block.inventory.getStackInSlot(0);
-            if (item.isEmpty()) {
-                const onlyOneItem = nbt ? Item.of(
-                    id, 1, nbt
-                ) : Item.of(id, 1);
-                if (isC) {
-                    block.inventory.setStackInSlot(0, onlyOneItem);
+            let updateItems = (block, item, isNew) => {
+                const items = block.getEntityData().attachments[0].items || [];
+                if (isNew) {
+                    items.push(item);
                 } else {
-                    block.inventory.setStackInSlot(0, onlyOneItem);
-                    gc(playerItem, player);
+                    Object.assign(items[0], item);
                 }
-            } else {
-                if (item.equals(playerItem)) {
-                    if (item.count + 1 > maxStackSize) return;
-                    gc(playerItem, player);
-                    block.inventory.setStackInSlot(0, Item.of(id, item.count + 1, nbt));
-                } else {
-                    const newInvItem = block.inventory.getStackInSlot(0);
-                    block.inventory.setStackInSlot(0, Item.empty)
-                    gc(playerItem, player);
-                    player.setMainHandItem(newInvItem);
-                    block.inventory.setStackInSlot(0, playerItem);
+                const newAttachment = {
+                    id: item.id,
+                    Count: item.Count
+                };
+                if (item.tag) {
+                    newAttachment.tag = item.tag;
                 }
+                block.mergeEntityData({
+                    attachments: [{ items: [newAttachment] }]
+                });
+            };
+            let heldItem = e.player.getHeldItem("main_hand");
+            let itemInSolt = e.block.inventory.getStackInSlot(0);
+            let { id, nbt, count } = heldItem;
+            if (id === "minecraft:air") return;
+            let bitem = { id: id, Count: count };
+            if (nbt) {
+                bitem.tag = nbt;
             }
+            let items = e.block.getEntityData().attachments[0].items || [];
+            updateItems(e.block, { Count: bitem.Count, Slot: 0, id: bitem.id, tag: bitem.tag }, items.length === 0);
+            e.player.setMainHandItem(itemInSolt)
         })
         .box(2, 0, 2, 14, 3, 14)
         .box(4, 3, 4, 12, 12, 12)
@@ -570,8 +566,119 @@ const renderByItem = (pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight
 }
 
 
-// BlockEvents.modification(e => {
-//     e.modify("chest", (e) => {
-//         e.setBlockBuilder()
-//     })
-// })
+// function Inv(/** @type { Internal.BlockContainerJS } */ block) {
+//     this.block = block;
+//     this.entityData = block.entityData;
+//     this.entity = /** @type { Internal.BlockEntityJS } */ (block.entity);
+// }
+// Inv.prototype = {
+
+//     get: function () {
+//         const item = /** @type {ItemTag} */ (this.entity.data.get("item")) || null
+//         return item
+//     },
+//     isEmpty: function () {
+//         return !this.get() || this.get() == {} || this.get().count == 0 || this.get().id == "minecraft:air"
+//     },
+//     clear: function () {
+//         this.entity.data.put("item", {})
+//         this.block.mergeEntityData({
+//             attachments: [{ items: [] }]
+//         })
+//         this.entity.sync();
+//     },
+//     /**
+//      * 
+//      * @param { ItemStack } item 
+//      */
+//     set: function (item) {
+//         const newAttachment = {
+//             id: item.id,
+//             Count: item.count,
+//             Slot: 0
+//         };
+//         const hasNbt = !!item.nbt
+//         this.entity.data.put("item", hasNbt ? {
+//             id: item.id,
+//             count: item.count,
+//             tag: item.nbt
+//         } : {
+//             id: item.id,
+//             count: item.count
+//         })
+//         if (item.nbt) {
+//             newAttachment.tag = item.nbt;
+//         }
+//         this.block.mergeEntityData({
+//             attachments: [{ items: [newAttachment] }]
+//         })
+//     }
+// }
+// /**
+//  * 
+//  * @param {Internal.BlockRightClickedEventJS} e 
+//  * @returns 
+//  */
+// global.pedestalRightClick = e => {
+//     let { player, block } = e;
+//     let playerItem = e.player.getHeldItem("main_hand")
+//     let { id, nbt, maxStackSize } = playerItem;
+//     let playIsEmpty = playerItem.isEmpty()
+//     /**
+//      * 
+//      * @param {ItemStack} item 
+//      * @param {ItemTag} itemTag 
+//      */
+//     let equalsItemAddItemTag = (item, itemTag) => {
+//         let baseEquals = item.id == itemTag.id && item.count == itemTag.count;
+//         if (item.nbt || itemTag.tag) {
+//             return baseEquals && item.nbt == itemTag.tag
+//         }
+//         return baseEquals
+//     }
+//     let itemTag2item = (/** @type { ItemTag } */itemTag) => {
+//         return itemTag.tag ? Item.of(itemTag.id, itemTag.count, itemTag.tag) : Item.of(itemTag.id, itemTag.count);
+//     }
+//     let inv = new Inv(block);
+
+//     let item = inv.get();
+//     /**
+//      * 
+//      * @param {ItemStack} heldItem 
+//      * @param {Internal.Player} player 
+//      */
+//     let gc = (heldItem, player) => {
+//         if (!player.isCreative()) {
+//             heldItem.shrink(1);
+//             if (heldItem.isEmpty()) {
+//                 player.setItemInHand("main_hand", Item.empty);
+//             }
+//         }
+//     }
+//     if (playIsEmpty) {
+//         let eInv = inv
+//         inv.clear()
+//         if (!eInv.isEmpty()) player.setMainHandItem(itemTag2item(inv.get()));
+//         return;
+//     };
+//     if (inv.isEmpty()) {
+//         let onlyOneItem = nbt ? Item.of(
+//             id, 1, nbt
+//         ) : Item.of(id, 1);
+//         gc(playerItem, player);
+//         inv.set(onlyOneItem);
+//     } else {
+//         if (equalsItemAddItemTag(playerItem, item)) {
+//             if (item.count + 1 > maxStackSize) return;
+//             gc(playerItem, player);
+//             inv.set(Item.of(id, item.count + 1, nbt));
+//         } else {
+//             let newInvItem = inv.get();
+//             inv.clear()
+//             gc(playerItem, player);
+//             let newItem = itemTag2item(newInvItem);
+//             player.setMainHandItem(newItem);
+//             inv.set(playerItem);
+//         }
+//     }
+// }
